@@ -3,22 +3,21 @@
 // like app/views/layouts/application.html.erb. All it does is render <div>Hello React</div> at the bottom
 // of the page.
 
-import React from 'react'
+import React, { useMemo } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 
-const Hello = (props) => <div>Hello {props.name}!</div>
-Hello.defaultProps = {
-    name: 'David',
-}
+import Home from '../Home'
 
-Hello.propTypes = {
-    name: PropTypes.string,
-}
+const Hello = (props) =>
+    useMemo(() => {
+        return (
+            <div>
+                Welocome to Ruby On Rails Project, {props.name}!{/*  <Home /> */}
+            </div>
+        )
+    }, [props.name])
 
 document.addEventListener('DOMContentLoaded', () => {
-    ReactDOM.render(
-        <Hello name="Lokesh" />,
-        document.body.appendChild(document.createElement('div')),
-    )
+    ReactDOM.render(<Home />, document.body.appendChild(document.createElement('div')))
 })
