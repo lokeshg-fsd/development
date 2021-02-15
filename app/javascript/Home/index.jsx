@@ -9,6 +9,8 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 import { Typography } from '@material-ui/core'
 
+import NavBar from './NavBar'
+
 const useStyles = makeStyles({
     root: {
         width: 500,
@@ -20,18 +22,21 @@ export default function Home() {
     const [value, setValue] = useState(0)
 
     return (
-        <BottomNavigation
-            value={value}
-            onChange={(event, newValue) => {
-                setValue(newValue)
-            }}
-            showLabels
-            className={classes.root}
-        >
-            <span> {value} </span>
-            <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-            <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-            <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
-        </BottomNavigation>
+        <Fragment>
+            <NavBar />
+            <BottomNavigation
+                value={value}
+                onChange={(event, newValue) => {
+                    setValue(newValue)
+                }}
+                showLabels
+                className={classes.root}
+            >
+                <span> {value} </span>
+                <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
+                <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
+                <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
+            </BottomNavigation>
+        </Fragment>
     )
 }
