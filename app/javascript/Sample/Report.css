@@ -1,0 +1,34 @@
+.customers {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width:fit-content;
+  }
+  
+  .customers td, #customers th {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 10px;
+    width: fit-content;
+  }
+  input[type="text"] {
+    width: fit-content;
+    padding: 8px;
+    text-align:left;
+  }
+  input[type="button"] {
+    width:fit-content;
+    padding: 8px;
+    text-align:justify;
+  }
+  
+  .customers tr:nth-child(even){background-color: #f2f2f2;}
+  
+  .customers tr:hover {background-color:rgb(212, 86, 86);}
+  
+  .customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #4CAF50;
+    color: white;
+  }

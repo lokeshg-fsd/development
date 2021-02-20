@@ -5,7 +5,8 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby version 
+  Should be greater than or equal to the 2.5.8
 
 * System dependencies
 

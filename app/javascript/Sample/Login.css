@@ -1,0 +1,32 @@
+input {
+    background-color: antiquewhite;
+    color: black;
+    border: 1px solid burlywood;
+    padding: 10px 0  ; 
+    border-radius:  15px;
+ }
+ .App {
+    text-align: center;
+  }
+  input[value= "submit"] {
+    background-color: antiquewhite;
+    color: rgb(255, 0, 0);
+    border: 1px solid burlywood;
+    padding: 10px 50px;
+    font-size: x-large;
+  }
+  h1{
+      color: rgb(21, 26, 26);
+  }
+  .App-header {
+    background-color:#acb2bd;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    
+    
+  }  

@@ -1,0 +1,42 @@
+div {
+  height: 340;
+  width: auto;
+  background-size: auto;
+}
+
+
+.Main {
+    background-color: #acb2bd;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    border: aqua;
+    border-style: inset;
+  }
+  input {
+    margin: 5px;
+    border-color: blue;
+    border: aqua;
+    border-style: groove; 
+    
+  }
+  .view {
+    
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    border-style: inset;
+    border: 3px solid #73AD21;
+
+  }
+  #submit {
+    margin:  0 0 0 60px;
+  }
+ h1 {
+    text-align: center;
+  }
