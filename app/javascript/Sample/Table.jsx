@@ -1,32 +1,37 @@
 // @flow 
 
-import React, { useMemo } from 'react'
+import React, { useMemo, useState, Fragment } from 'react'
 import { ReactDataGrid, ReactDataGridColumn, ReactDataGridColumnLevel }
  from 'flexicious-react-datagrid'
+ import axios from 'axios'
 
+const DataProvider = JSON
 const Table = () => {
-    async function getData() {
-        const response = await  fetch('http://localhost:3000/persons')
-    const values = await response.json()
+    const [books, setBooks] =  useState(null);
 
-    if (!values) {
-         return getData()
-    }
+    const apiURL = 'http://localhost:3000/persons'
 
-    return values
+    const fetchData = async () => {
+        const response = await axios.get(apiURL)
+
+        setBooks(response.data) 
     }
    
-    const { data } = getData()
-
+    
     return useMemo( () =>{
-        if (!data?.length) {
+        if (!books?.data) {
+            fetchData()
+
             return
         }
 
+        const dataValues =  books.data
+
         return (
-            <div>
-                <h1 style={{ textAlign: 'left' }}> Simple Table </h1>
-                <ReactDataGrid dataProvider={data} editable width={"100%"} >
+            <Fragment>
+               {/* <span> {books} </span>
+            <h1 style={{ textAlign: 'left' }}> Simple Table </h1>
+                 <ReactDataGrid dataProvider={books} editable width={"100%"} >
                     <ReactDataGridColumnLevel>
                         <ReactDataGridColumn dataField={'firstName'} headerText={'Username'}   editable={false} />
                         <ReactDataGridColumn dataField={'lastName'} headerText={'Name'}   editable />
@@ -37,10 +42,19 @@ const Table = () => {
                         <ReactDataGridColumn dataField={'status'} headerText={"CheckBox"}  editable={false} />
                         <ReactDataGridColumn dataField={'created_at'} headerText={"Date"}  />
                     </ReactDataGridColumnLevel>
-                </ReactDataGrid>
-            </div>
+        </ReactDataGrid> */ }
+
+                { dataValues.map((data) => {
+                    <Fragment>
+                        {Object.keys(data).map((key) => 
+                         (
+                        <Fragment>
+                             <label title={data[key]} /> <br /> <label  title= {key}/>
+                        </Fragment>))
+                                     } </Fragment> } )}
+                </Fragment>
         )
-    } , [data] )
+    } , [books] )
    
      
 }
