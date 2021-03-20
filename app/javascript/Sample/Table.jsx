@@ -1,62 +1,96 @@
-// @flow 
+// @flow
 
-import React, { useMemo, useState, Fragment } from 'react'
-import { ReactDataGrid, ReactDataGridColumn, ReactDataGridColumnLevel }
- from 'flexicious-react-datagrid'
- import axios from 'axios'
+import React, { useMemo, useState, Fragment, useEffect } from 'react'
+import {
+  ReactDataGrid,
+  ReactDataGridColumn,
+  ReactDataGridColumnLevel,
+} from 'flexicious-react-datagrid'
+import axios from 'axios'
 
 const DataProvider = JSON
 const Table = () => {
-    const [books, setBooks] =  useState(null);
+  const [books, setBooks] = useState(null)
 
-    const apiURL = 'http://localhost:3000/persons'
+  const apiURL = 'http://localhost:3000/persons'
+  const fetchData = async (api) => {
+    const response = await axios.get(api)
 
-    const fetchData = async () => {
-        const response = await axios.get(apiURL)
-
-        setBooks(response.data) 
+    if (response?.data) {
+      return response.data
     }
-   
-    
-    return useMemo( () =>{
-        if (!books?.data) {
-            fetchData()
 
-            return
-        }
+    return fetchData(api)
+  }
+  useEffect(() => {
+    if (books) {
+      return
+    }
+    setBooks(fetchData(apiURL) || [])
+  }, [books])
 
-        const dataValues =  books.data
+  return useMemo(() => {
+    if (!books) {
+      return <span> {books || 'Nothing'} </span>
+    }
 
-        return (
-            <Fragment>
-               {/* <span> {books} </span>
-            <h1 style={{ textAlign: 'left' }}> Simple Table </h1>
-                 <ReactDataGrid dataProvider={books} editable width={"100%"} >
-                    <ReactDataGridColumnLevel>
-                        <ReactDataGridColumn dataField={'firstName'} headerText={'Username'}   editable={false} />
-                        <ReactDataGridColumn dataField={'lastName'} headerText={'Name'}   editable />
-                        <ReactDataGridColumn dataField={'address'} headerText={'Age'} editable />
-                        <ReactDataGridColumn dataField={'phone'} headerText={'Phone'}   editable />
-                        <ReactDataGridColumn dataField={'email'} headerText={'Email'}  editable />
-                        <ReactDataGridColumn dataField={'userType'} headerText={'Password'}  editable />
-                        <ReactDataGridColumn dataField={'status'} headerText={"CheckBox"}  editable={false} />
-                        <ReactDataGridColumn dataField={'created_at'} headerText={"Date"}  />
-                    </ReactDataGridColumnLevel>
-        </ReactDataGrid> */ }
+    return (
+      <Fragment>
+        <span> {books || 'Nothings'} </span>
+        <h1 style={{ textAlign: 'left' }}> Simple Table </h1>
+        <ReactDataGrid dataProvider={books} editable width={'100%'}>
+          <ReactDataGridColumnLevel>
+            <ReactDataGridColumn
+              dataField={'firstName'}
+              headerText={'Username'}
+              editable={false}
+            />
+            <ReactDataGridColumn
+              dataField={'lastName'}
+              headerText={'Name'}
+              editable
+            />
+            <ReactDataGridColumn
+              dataField={'address'}
+              headerText={'Age'}
+              editable
+            />
+            <ReactDataGridColumn
+              dataField={'phone'}
+              headerText={'Phone'}
+              editable
+            />
+            <ReactDataGridColumn
+              dataField={'email'}
+              headerText={'Email'}
+              editable
+            />
+            <ReactDataGridColumn
+              dataField={'userType'}
+              headerText={'Password'}
+              editable
+            />
+            <ReactDataGridColumn
+              dataField={'status'}
+              headerText={'CheckBox'}
+              editable={false}
+            />
+            <ReactDataGridColumn dataField={'created_at'} headerText={'Date'} />
+          </ReactDataGridColumnLevel>
+        </ReactDataGrid>
 
-                { dataValues.map((data) => {
-                    <Fragment>
-                        {Object.keys(data).map((key) => 
-                         (
-                        <Fragment>
-                             <label title={data[key]} /> <br /> <label  title= {key}/>
-                        </Fragment>))
-                                     } </Fragment> } )}
-                </Fragment>
-        )
-    } , [books] )
-   
-     
+        {books?.map((data) => {
+          ;<Fragment>
+            {Object.keys(data).map((key) => (
+              <Fragment>
+                <label title={data[key]} /> <br /> <label title={key} />
+              </Fragment>
+            ))}{' '}
+          </Fragment>
+        })}
+      </Fragment>
+    )
+  }, [books])
 }
 
-export default Table;
+export default Table
