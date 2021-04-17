@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  # get 'root', to: 'application'
   get 'pages', to: 'pages#index'
   get 'persons', to: 'persons#index'
   get 'persons/status', to: 'persons#by_status'

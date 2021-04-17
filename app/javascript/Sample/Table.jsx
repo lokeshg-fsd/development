@@ -8,37 +8,56 @@ import {
 } from 'flexicious-react-datagrid'
 import axios from 'axios'
 
-const DataProvider = JSON
-const Table = () => {
-  const [books, setBooks] = useState(null)
+import useCustom from '../packs/useCustomFetch'
 
-  const apiURL = 'http://localhost:3000/persons'
-  const fetchData = async (api) => {
-    const response = await axios.get(api)
+function Table() {
+  const apiURL = 'http://localhost:4000/persons'
+  
+  const [books, loading, refetch] = useCustom(apiURL)
+  const [data, setData] = useState([])
 
-    if (response?.data) {
-      return response.data
-    }
-
-    return fetchData(api)
-  }
   useEffect(() => {
-    if (books) {
+    if (loading) {
       return
     }
-    setBooks(fetchData(apiURL) || [])
-  }, [books])
+    setData(books.data)
+  }, [loading])
 
   return useMemo(() => {
-    if (!books) {
-      return <span> {books || 'Nothing'} </span>
+    if (!data || !data.length) {
+      return <span> {books || 'Loading'} </span>
+    }
+
+    if (data) {
+      return (
+        <span>
+          <Fragment>
+            {data.map((value, index) => (
+              <Fragment>
+                <div key={index}>
+                  <label key={index} title={JSON.stringify(value)} />
+                  {Object.keys(value).map((key) => (
+                    <Fragment>
+                      <label key={key} title={JSON.stringify(value[key])} />
+                    </Fragment>
+                  ))}
+                </div>
+              </Fragment>
+            ))}
+          </Fragment>
+        </span>
+      )
     }
 
     return (
       <Fragment>
-        <span> {books || 'Nothings'} </span>
         <h1 style={{ textAlign: 'left' }}> Simple Table </h1>
-        <ReactDataGrid dataProvider={books} editable width={'100%'}>
+        <ReactDataGrid
+          key={'sumnodf'}
+          dataProvider={data}
+          editable
+          width={'100%'}
+        >
           <ReactDataGridColumnLevel>
             <ReactDataGridColumn
               dataField={'firstName'}
@@ -78,19 +97,9 @@ const Table = () => {
             <ReactDataGridColumn dataField={'created_at'} headerText={'Date'} />
           </ReactDataGridColumnLevel>
         </ReactDataGrid>
-
-        {books?.map((data) => {
-          ;<Fragment>
-            {Object.keys(data).map((key) => (
-              <Fragment>
-                <label title={data[key]} /> <br /> <label title={key} />
-              </Fragment>
-            ))}{' '}
-          </Fragment>
-        })}
       </Fragment>
     )
-  }, [books])
+  }, [data])
 }
 
 export default Table

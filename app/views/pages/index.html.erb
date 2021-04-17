@@ -1,1 +1,22 @@
-<%= javascript_pack_tag 'hello_react' %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pages - Persons</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <div id="container">
+    <%= javascript_pack_tag 'hello_react' %> 
+</div>
+
+<div id="second-container">
+    <!-- This element's contents will be replaced with the second component. -->
+    <%= javascript_pack_tag 'hello_react' %> 
+</div>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>

@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_09_124158) do
+ActiveRecord::Schema.define(version: 2021_04_17_131826) do
+
+  create_table "bloods", charset: "utf8mb4", force: :cascade do |t|
+    t.string "group", null: false
+    t.integer "value"
+    t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "branches", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
