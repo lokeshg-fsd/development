@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_17_131826) do
+ActiveRecord::Schema.define(version: 2021_04_19_140431) do
 
   create_table "bloods", charset: "utf8mb4", force: :cascade do |t|
     t.string "group", null: false
-    t.integer "value"
+    t.integer 'value'
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -42,6 +42,8 @@ ActiveRecord::Schema.define(version: 2021_04_17_131826) do
     t.text "address"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "bloods_id", default: 1, null: false
+    t.index ["bloods_id"], name: "index_people_on_bloods_id"
   end
 
 end
