@@ -21,13 +21,29 @@ class PersonsController < ApplicationController
         person << value
       end
       render json: { data: person }, status: :ok
-    elsif render json: { data: Person.all }
+    else
+      data = Person.includes(:blood, :branch).all.map do |p|
+        { person: p, blood: p.blood, branch: p.branch }
+      end
+      render json: data
     end
   end
 
   def by_status
-    persons = Person.where('status = ?', Integer(params[:as] || 1))
-    render json: { data: persons }
+    persons = Person.includes(:blood).where('status = ?', Integer(params[:as] || 1))
+    maped_data = persons.map do |p|
+      {
+        firstName: p.firstName,
+        lastName: p.lastName,
+        fullName: p.firstName + ' ' + p.lastName,
+        userType: p.userType,
+        email: p.email,
+        blood: p.blood&.group,
+        bloodValue: p.blood&.value,
+        address: p.address
+      }
+    end
+    render json: { data: maped_data }
   end
 
   def grouped

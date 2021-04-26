@@ -28,7 +28,7 @@ const store = createStore(reducer)
   },
 }) */
 
-const apiURL = 'http://localhost:4000/persons'
+const apiURL = 'http://localhost:4000/persons/status?as=1'
 
 function DomElement() {
   const [books, loading, refetch] = useCustom(apiURL)
@@ -60,6 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <DomElement key={random()} />
       </Provider>
     </React.StrictMode>,
-    document.body.appendChild(document.createElement('div')),
+    document.getElementById('container'),
   )
 })

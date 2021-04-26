@@ -10,24 +10,31 @@ import axios from 'axios'
 
 import useCustom from '../packs/useCustomFetch'
 
-function Table() {
-  const apiURL = 'http://localhost:4000/persons'
-  
-  const [books, loading, refetch] = useCustom(apiURL)
-  const [data, setData] = useState([])
+type Props = {
+  data: $ReadOnlyArray<*>,
+}
 
-  useEffect(() => {
-    if (loading) {
-      return
-    }
-    setData(books.data)
-  }, [loading])
+function Table({ data }: Props) {
+  return (
+    <span>
+      <Fragment>
+        {data.map((value, index) => (
+          <Fragment>
+            <div key={index}>
+              <label key={index} title={JSON.stringify(value)} />
+              {Object.keys(value).map((key) => (
+                <Fragment>
+                  <label key={key} title={JSON.stringify(value[key])} />
+                </Fragment>
+              ))}
+            </div>
+          </Fragment>
+        ))}
+      </Fragment>
+    </span>
+  )
 
-  return useMemo(() => {
-    if (!data || !data.length) {
-      return <span> {books || 'Loading'} </span>
-    }
-
+  /* return useMemo(() => {
     if (data) {
       return (
         <span>
@@ -99,7 +106,7 @@ function Table() {
         </ReactDataGrid>
       </Fragment>
     )
-  }, [data])
+  }, [data]) */
 }
 
 export default Table
