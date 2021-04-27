@@ -10,7 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_19_163523) do
+ActiveRecord::Schema.define(version: 2021_04_26_192339) do
+
+  create_table "bloods", charset: "utf8mb4", force: :cascade do |t|
+    t.string "group", null: false
+    t.integer "value"
+    t.string "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "branches", charset: "utf8mb4", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.text "address"
+    t.integer "phone"
+    t.string "password", null: false
+    t.string "dealer"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_branches_on_email", unique: true
+  end
 
   create_table "people", charset: "utf8mb4", force: :cascade do |t|
     t.string "lastName"
@@ -21,6 +42,10 @@ ActiveRecord::Schema.define(version: 2021_02_19_163523) do
     t.text "address"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "blood_id", default: 1, null: false
+    t.bigint "branch_id", null: false
+    t.index ["blood_id"], name: "index_people_on_blood_id"
+    t.index ["branch_id"], name: "index_people_on_branch_id"
   end
 
 end
