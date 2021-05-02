@@ -1,0 +1,553 @@
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
+# TODO: turn linting on for bin/
+AllCops:
+  TargetRubyVersion: 2.6
+  Exclude:
+    - 'app/javascript/**/*'
+    - 'bin/**/*'
+    - 'config/initializers/filter_parameter_logging.rb'
+    - 'db/schema.rb'
+    - 'db/seeds.rb'
+    - 'flow/**/*'
+    - 'flow-typed/**/*'
+    - 'log/**/*'
+    - 'node_modules/**/*'
+    - 'public/**/*'
+    - 'tmp/**/*'
+    - 'test/**/*'
+    - 'vendor/**/*'
+
+# This linter causes us to break with normal Rails style for our scopes as well as other places.
+# It wants us to write our scopes with extra params like:
+#    scope(:thingy, -> { where: 'thingy' })
+# This breaks with Rails convention and documentation.
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+# TODO: Enable - needs a decision on which replacement to use (CGI.escape outputs '+' instead of '%20' for ' ')
+Lint/UriEscapeUnescape:
+  Enabled: false
+
+#
+# Metrics
+#
+
+# TODO: Enable and gradually reduce Max to default (15)
+# Note: this will probably be easier to tackle after Metrics/CyclometricComplexity and Metrics/PerceivedComplexity
+Metrics/AbcSize:
+  Enabled: false
+  Max: 50
+
+# TODO: gradually reduce Max to default (25)
+Metrics/BlockLength:
+  Max: 50 # should match Metrics/ModuleLength:Max
+  Exclude:
+    - 'spec/**/*' # specs have very large blocks due to the nature of the rspec DSL
+    - config/routes.rb
+
+# TODO: gradually reduce max to default (100)
+Metrics/ClassLength:
+  Max: 350 # Should match Metrics/ModuleLength:Max
+  
+
+# TODO: Enable and gradually reduce max to default (6)
+Metrics/CyclomaticComplexity:
+  Enabled: false
+  Max: 10
+
+# TODO: Enable when everyone has agreed on a max line length
+Layout/LineLength:
+  Max: 120
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+# TODO Enable and gradually reduce max to default (25)
+Metrics/MethodLength:
+  Enabled: false
+  Max: 50 # should match Metrics/BlockLength:Max
+
+# TODO: gradually reduce max to default (100)
+Metrics/ModuleLength:
+  Max: 350 # Should match Metrics/ClassLength:Max
+
+# TODO: Enable
+Metrics/ParameterLists:
+  Enabled: false
+  CountKeywordArgs: false
+
+# TODO: Enable and gradually reduce to default (7)
+Metrics/PerceivedComplexity:
+  Enabled: false
+  Max: 10
+
+#
+# Naming
+#
+
+# Might be a good idea, but we have a lot of <<EOT, <<EOD, <<END, etc that we'd need to find names for
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
+# TODO: remove the exclusions for AMF endpoint files once we've ended Flash
+Naming/MethodName:
+  Exclude:
+    - 'app/controllers/concerns/amf/**/*'
+
+# We need to tell this cop to allow 'x' and 'y' as short param names in addition to defaults
+Naming/MethodParameterName:
+  AllowedNames: [by, id, to, x, y]
+
+# No restrictions on numbered vars; var_1, var1, or var_one are all OK.
+Naming/VariableNumber:
+  Enabled: false
+
+#
+# Style
+#
+
+# end-of-block comments are helpful where we allow (very) long blocks (i.e. in spec/)
+Style/CommentedKeyword:
+  Enabled: true
+  Exclude:
+    - 'spec/**/*'
+
+Style/Documentation:
+  Enabled: false
+
+# With Metrics/LineLength disabled, this rule enforces 'foo if bar' lines that are way too long
+Style/IfUnlessModifier:
+  Enabled: false
+
+# Disabling for GraphQL to leverage upgrade task
+Style/ClassAndModuleChildren:
+  Exclude:
+    - app/graphql/**/*.rb
+
+# We allow 05 rather than 0o5
+Style/NumericLiteralPrefix:
+  EnforcedOctalStyle: zero_only
+
+Style/SignalException:
+  EnforcedStyle: semantic
+
+# Allow (very) simple ternaries without parens around the condition
+Style/TernaryParentheses:
+  EnforcedStyle: require_parentheses_when_complex
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+
+#
+# New cops, these need to be evaluated and enabled or disabled with a comment
+# https://www.pivotaltracker.com/story/show/174329333
+#
+# intentionally disabled:
+#   add cops here that we are not going to enable
+#
+# enabled:
+#   add new cops that we are going to enable
+#
+# unchecked:
+#
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2690
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2691
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2692
+Lint/BinaryOperatorWithIdenticalOperands:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2693
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2694
+Lint/DuplicateElsifCondition:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2695
+Lint/DuplicateRescueException:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2696
+Lint/EmptyConditionalBody:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2697
+Lint/FloatComparison:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2698
+Lint/MissingSuper:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2699
+Lint/MixedRegexpCaptureTypes:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2700
+Lint/OutOfRangeRegexpRef:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2701
+Lint/RaiseException:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2702
+Lint/SelfAssignment:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2703
+Lint/StructNewOverride:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2704
+Lint/TopLevelReturnWithArgument:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2705
+Lint/UnreachableLoop:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2706
+Style/AccessorGrouping:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2707
+Style/ArrayCoercion:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2708
+Style/BisectedAttrAccessor:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2709
+Style/CaseLikeIf:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2711
+Style/ExplicitBlockArgument:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2712
+Style/ExponentialNotation:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2713
+Style/GlobalStdStream:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2714
+Style/HashAsLastArrayItem:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2715
+Style/HashEachMethods:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2716
+Style/HashLikeCase:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2717
+Style/HashTransformKeys:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2718
+Style/HashTransformValues:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2719
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2720
+Style/RedundantAssignment:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2721
+Style/RedundantFetchBlock:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2722
+Style/RedundantFileExtensionInRequire:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2723
+Style/RedundantRegexpCharacterClass:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2724
+Style/RedundantRegexpEscape:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2725
+Style/SingleArgumentDig:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2726
+Style/SlicingWithRange:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2727
+Style/StringConcatenation:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2728
+Performance/AncestorsInclude:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2729
+Performance/BigDecimalWithNumericArgument:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2730
+Performance/RedundantSortBlock:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2731
+Performance/RedundantStringChars:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2732
+Performance/ReverseFirst:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2733
+Performance/SortReverse:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2734
+Performance/Squeeze:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2735
+Performance/StringInclude:
+  Enabled: false
+
+#
+# Rails
+#
+
+Rails:
+  Enabled: true
+
+# TODO: This seems like a good rule that might give us a very slight performance boost,
+# but it will require some effort to get the current codebase passing.
+Rails/BulkChangeTable:
+  Enabled: false
+
+# Only for migrations in 2019+.
+Rails/CreateTableWithTimestamps:
+  Enabled: true
+  Exclude:
+    - !ruby/regexp /db\/migrate\/201[0-8].*\.rb$/
+
+# TODO: Enable this
+Rails/Date:
+  Enabled: false
+
+Rails/Delegate:
+  EnforceForPrefixed: false
+
+# TODO: Enable this -- Please use Rails.root.join('path', 'to')
+Rails/FilePath:
+  Enabled: false
+
+# TODO: Enable this
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+# Many places we have NOT NULL columns that have no reasonable default (a users 'first_name' column for instance)
+# "Do not add a NOT NULL column without a default value."
+Rails/NotNullColumn:
+  Enabled: false
+
+# TODO: Enable this: https://www.pivotaltracker.com/story/show/128098769
+Rails/OutputSafety:
+  Enabled: false
+
+# Only for migrations in 2018+.
+Rails/ReversibleMigration:
+  Enabled: true
+  Exclude:
+    - !ruby/regexp /db\/migrate\/201[0-7].*\.rb$/
+
+# TODO: Enable this, but determine where it is appropriate to skip validations.
+Rails/SkipsModelValidations:
+  Enabled: false
+
+# TODO: Enable this
+Rails/TimeZone:
+  Enabled: false
+
+Rails/UnknownEnv:
+  Environments: test, development, production, profile
+
+# There are several controllers that bypass ApplicationController and inherit directly
+# from ActionController::Base.
+Rails/ApplicationController:
+  Enabled: false
+
+# TODO: this is a performance issue and should be fixed.  It requires adding indexes.
+# see https://docs.rubocop.org/rubocop-rails/cops_rails.html#railsuniquevalidationwithoutindex
+# story: https://www.pivotaltracker.com/story/show/174328944
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+#
+# New cops: these need to be evaluated and enabled/disabled
+# Story: https://www.pivotaltracker.com/story/show/174329333
+#
+# intentionally disabled:
+#   add cops here once they have been checked.
+
+# enabled:
+
+Rails/WhereExists:
+  Enabled: true
+
+# unchecked:
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2736
+Rails/ActiveRecordCallbacksOrder:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2737
+Rails/FindById:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2738
+Rails/Inquiry:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2739
+Rails/MailerName:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2740
+Rails/MatchRoute:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2741
+Rails/NegateInclude:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2742
+Rails/Pluck:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2743
+Rails/PluckInWhere:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2744
+Rails/RenderInline:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2745
+Rails/RenderPlainText:
+  Enabled: false
+
+# https://officespacesoftware.atlassian.net/browse/CORE-2746
+Rails/ShortI18n:
+  Enabled: false
+
+#
+# Rspec
+#
+
+# see: https://github.com/nevir/rubocop-rspec/blob/master/lib/rubocop/cop/rspec/any_instance.rb
+# We should enable this, but will require some refactoring work.
+RSpec/AnyInstance:
+  Enabled: false
+
+# This is a really good new rule.  It can't be autocorrected.  We have over 2000 violations of it.
+RSpec/ContextWording:
+  Enabled: false
+
+# needed for rspec_api_documentation DSL
+# reference: https://github.com/zipmark/rspec_api_documentation
+RSpec/EmptyExampleGroup:
+  CustomIncludeMethods:
+    - example
+    - example_request
+
+# see: https://github.com/nevir/rubocop-rspec/blob/master/lib/rubocop/cop/rspec/example_length.rb
+# Enabling this might be a good idea, but would require some refactoring.
+RSpec/ExampleLength:
+  Enabled: false
+
+# This rule doesn't work for predicate methods that take arguments, e.g. foo.handles?(bar).
+# And we have a lot of methods like that.
+RSpec/PredicateMatcher:
+  Enabled: false
+
+# see: http://www.rubydoc.info/gems/rubocop-rspec/1.3.1/RuboCop/Cop/RSpec/VerifiedDoubles
+# we should enable this, but it will require some close attention to our use of doubles.
+RSpec/VerifiedDoubles:
+  Enabled: false
+
+# this Cop does no apply to feature/request specs
+# RSpec/DescribeClass:
+  # Exclude:
+    #- 'spec/features/**/*'
+    #- 'spec/requests/**/*'
+    #- 'spec/system/**/*'
+    #- 'spec/graphql/**/*'
+
+# TODO: enable - most of this is due to mocking in `before` blocks.  Get rid of mocks where possible.
+RSpec/ExpectInHook:
+  Enabled: false
+
+# To encourage better performance (db setup/teardown particularly) we allow multiple expectations per test.
+RSpec/MultipleExpectations:
+  Enabled: false
+
+# We allow arbitrarily deep nested example groups.
+RSpec/NestedGroups:
+  Enabled: false
+
+# These are good cops, but would require a lot of rewrite as we have many, many of these
+RSpec/ImplicitBlockExpectation:
+  Enabled: false
+
+RSpec/RepeatedExampleGroupDescription:
+  Enabled: false
+
+RSpec/RepeatedExampleGroupBody:
+  Enabled: false
+
+# We find it more readable to use the name of the class in specs, rather then 'described_class'
+RSpec/DescribedClass:
+  EnforcedStyle: explicit
+
+RSpec/MessageSpies:
+  EnforcedStyle: receive
+
+RSpec/FilePath:
+  CustomTransform:
+    RuboCop: 'rubocop'
+
+#
+# Capybara
+#
+
+# This cop turns off some obscure aliases ('background' for 'before', 'given' for 'let')
+#   which is fine, but we want to keep 'feature' for 'describe' and 'scenario' for 'it'

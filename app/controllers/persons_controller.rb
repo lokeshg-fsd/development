@@ -3,7 +3,7 @@
 class PersonsController < ApplicationController
   def delete
     persons = Person.where('email = ?', params[:email])
-    persons.each { |p| p.destroy }
+    persons&.destroy
     if persons.empty?
       render json: { mesage: 'No Record Found' }
     elsif render json: { message: 'Deleted Successfully' }
@@ -40,7 +40,7 @@ class PersonsController < ApplicationController
         email: p.email,
         blood: p.blood&.group,
         bloodValue: p.blood&.value,
-        address: p.address
+        address: p.address,
       }
     end
     render json: { data: maped_data }
@@ -52,9 +52,7 @@ class PersonsController < ApplicationController
 
   def create
     created = Person.where('email = ?', params[:email])
-    para = ActionController::Parameters.new({
-                                              person: params
-                                            })
+    para = ActionController::Parameters.new({ person: params })
     permision = para.require(:person).permit(:email)
     # byebug
     if permision.permitted? && created.empty? && !permision.empty?
@@ -64,7 +62,7 @@ class PersonsController < ApplicationController
                                status: params[:status] || 0,
                                address: params[:address] || 'None',
                                userType: params[:userType] || 'user',
-                               email: params[:email]
+                               email: params[:email],
                              })
       render json: { data: person, response: 'SuccsessFully Created User' }
 

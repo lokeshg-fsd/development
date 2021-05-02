@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   # get 'root', to: 'application'
   get 'pages', to: 'pages#index'
