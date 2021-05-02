@@ -1,47 +1,24 @@
+# frozen_string_literal: true
+
 class InsertDetailsIntoBlood < ActiveRecord::Migration[6.1]
-  BLOOD_GROUPS = [{
-    group: 'A+',
-    value: 10,
-    description: 'A+ Blood Group'
-  }, {
-    group: 'A-',
-    value: 20,
-    description: 'A- Blood Group'
-  }, {
-    group: 'B+',
-    value: 30,
-    description: 'B+ Blood Group'
-  }, {
-    group: 'B-',
-    value: 40,
-    description: 'b- Blood Group'
-  }, {
-    group: 'AB+',
-    value: 50,
-    description: 'AV+ Blood Group'
-  }, {
-    group: 'AB-',
-    value: 60,
-    description: 'AB- Blood Group'
-  }, {
-    group: 'O+',
-    value: 70,
-    description: 'O+ Blood Group'
-  }, {
-    group: 'O-',
-    value: 80,
-    description: 'O- Blood Group'
-  }, {
-    group: 'Other',
-    value: 90,
-    description: 'Not Listed Blood Group'
-  }].freeze
+  BLOOD_GROUPS = [].freeze
+
+  BLOOD_GROUPS.push({ group: 'A+', value: 10, description: 'A+ Blood Group' })
+  BLOOD_GROUPS.push({ group: 'A-', value: 20, description: 'A- Blood Group' })
+  BLOOD_GROUPS.push({ group: 'B+', value: 30, description: 'B+ Blood Group' })
+  BLOOD_GROUPS.push({ group: 'B-', value: 40, description: 'b- Blood Group' })
+  BLOOD_GROUPS.push({ group: 'AB+', value: 50, description: 'AV+ Blood Group' })
+  BLOOD_GROUPS.push({ group: 'O+', value: 70, description: 'O+ Blood Group' })
+  BLOOD_GROUPS.push({ group: 'O-', value: 80, description: 'O- Blood Group' })
+  BLOOD_GROUPS.push({ group: 'Other', value: 90, description: 'Not Listed Blood Group' })
+
+  BLOOD_GROUPS.freeze
 
   def up
-    if Blood.all.empty?
-      BLOOD_GROUPS.map do |item|
-        Blood.create(item)
-      end
+    return unless Blood.all.empty?
+
+    BLOOD_GROUPS.map do |item|
+      Blood.create(item)
     end
   end
 
