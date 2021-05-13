@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  # get 'root', to: 'application'
+  devise_for :users
+  root to: 'persons#index'
+
   get 'pages', to: 'pages#index'
   get 'persons', to: 'persons#index'
   get 'persons/status', to: 'persons#by_status'

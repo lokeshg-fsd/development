@@ -25,7 +25,7 @@ class PersonsController < ApplicationController
       data = Person.includes(:blood, :branch).all.map do |p|
         { person: p, blood: p.blood, branch: p.branch }
       end
-      render json: data
+      render json: { data: data, email: current_user.email }
     end
   end
 
