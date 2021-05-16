@@ -1,17 +1,17 @@
-import React from 'react';
-import './App.css';
+// @flow
+import React from 'react'
+import './App.css'
 // main components Login , Table , ReduxConcepts
-import ReduxConcepts from './ReduxConcepts';
-import Third from './Third';
+import ReduxConcepts from './ReduxConcepts'
+import Third from './Third'
 
 function App() {
   return (
     <div className="App">
       <Third />
-     <ReduxConcepts />
-
+      <ReduxConcepts />
     </div>
-  ); 
-} 
+  )
+}
 
-export default App;
+export default App

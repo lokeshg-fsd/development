@@ -17,20 +17,20 @@ type Props = {
 function Table({ data }: Props) {
   return (
     <span>
-      <Fragment>
+      <>
         {data.map((value, index) => (
-          <Fragment>
+          <>
             <div key={index}>
               <label key={index} title={JSON.stringify(value)} />
               {Object.keys(value).map((key) => (
-                <Fragment>
+                <>
                   <label key={key} title={JSON.stringify(value[key])} />
-                </Fragment>
+                </>
               ))}
             </div>
-          </Fragment>
+          </>
         ))}
-      </Fragment>
+      </>
     </span>
   )
 

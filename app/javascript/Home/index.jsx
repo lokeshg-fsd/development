@@ -12,18 +12,18 @@ import NavBar from './NavBar'
 import Login from '../Sample/Login'
 
 const useStyles = makeStyles({
-    root: {
-        width: 500,
-    },
+  root: {
+    width: 500,
+  },
 })
 
 export default function Home() {
-    const classes = useStyles()
-    const [value, setValue] = useState(0)
+  const classes = useStyles()
+  const [value, setValue] = useState(0)
 
-    return (
-        <Fragment>
-            {/* <BottomNavigation
+  return (
+    <>
+      {/* <BottomNavigation
             <NavBar />
                 value={value}
                 onChange={(event, newValue) => {
@@ -37,7 +37,7 @@ export default function Home() {
                 <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
                 <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
             </BottomNavigation> */}
-            <Login />
-        </Fragment>
-    )
+      <Login />
+    </>
+  )
 }

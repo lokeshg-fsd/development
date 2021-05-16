@@ -1,0 +1,48 @@
+[ignore]
+<PROJECT_ROOT>/public/.*
+<PROJECT_ROOT>/vendor/.*
+<PROJECT_ROOT>/.bundle/.*
+<PROJECT_ROOT>/app/javascript/moves/.*/__tests__/.*
+<PROJECT_ROOT>/app/javascript/moves/.*/tests/.*
+# Ignore due to improperly formated JSON
+<PROJECT_ROOT>/node_modules/kd-tree-javascript/examples/.*
+
+[untyped]
+# Begin ignored files due to https://github.com/facebook/flow/issues/6717
+<PROJECT_ROOT>/node_modules/react-select/.*
+<PROJECT_ROOT>/node_modules/graphql/error/.*
+<PROJECT_ROOT>/node_modules/graphql/execution/.*
+<PROJECT_ROOT>/node_modules/graphql/subscription/.*
+<PROJECT_ROOT>/node_modules/graphql/type/scalars.js.flow
+<PROJECT_ROOT>/node_modules/graphql/utilities/.*
+# End ignored files due to https://github.com/facebook/flow/issues/6717
+
+[declarations]
+<PROJECT_ROOT>/node_modules/.*
+
+[include]
+
+[libs]
+
+[options]
+emoji=true
+exact_by_default=true
+include_warnings=true
+module.file_ext=.js
+module.file_ext=.jsx
+module.file_ext=.json
+module.name_mapper.extension='css' -> '<PROJECT_ROOT>/flow/CSSModule.flow.js'
+module.name_mapper.extension='scss' -> '<PROJECT_ROOT>/flow/CSSModule.flow.js'
+module.name_mapper.extension='png' -> '<PROJECT_ROOT>/flow/WebpackAsset.flow.js'
+module.name_mapper.extension='jpg' -> '<PROJECT_ROOT>/flow/WebpackAsset.flow.js'
+module.name_mapper.extension='svg' -> '<PROJECT_ROOT>/flow/WebpackAsset.flow.js'
+module.name_mapper.extension='svg' -> '<PROJECT_ROOT>/flow/WebpackAsset.flow.js'
+module.name_mapper.extension='graphql' -> '<PROJECT_ROOT>/flow/GraphQLShim.flow.js'
+module.name_mapper='^move_manager' ->'<PROJECT_ROOT>/app/javascript/manager/move_manager'
+module.name_mapper='^facilities_editor' ->'<PROJECT_ROOT>/app/javascript/manager/editor'
+module.name_mapper='^.storybook' ->'<PROJECT_ROOT>/app/javascript/.storybook'
+module.system.node.allow_root_relative=true
+module.system.node.root_relative_dirname=app/javascript
+sharedmemory.hash_table_pow=21
+sharedmemory.heap_size=3221225472
+esproposal.optional_chaining=enable
