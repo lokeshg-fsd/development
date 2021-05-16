@@ -11,6 +11,9 @@ import reducer from '../Sample/Reducer'
 import App from '../Sample/Table'
 import useCustom from '../packs/useCustomFetch'
 
+import Table from '../Components/Table'
+import fetchApiData from '../Components/Data'
+
 const store = createStore(reducer)
 
 /* ReactDOM.render(
@@ -57,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
     <React.StrictMode>
       <Provider store={store}>
-        <DomElement key={random()} />
+        <Table fetchData={fetchApiData} />
       </Provider>
     </React.StrictMode>,
     document.getElementById('container'),
