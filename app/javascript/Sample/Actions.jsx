@@ -1,32 +1,21 @@
 // @flow
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux'
 
-export const ageUp = () => {
-    return {type : 'ageincrement'}
-}
-export const ageDown = () => {
-    return {type : 'agedecrement'}
-}
+export const ageUp = () => ({ type: 'ageincrement' })
+export const ageDown = () => ({ type: 'agedecrement' })
 
 export const ageDownDispatch = (props) => {
-    props.AgeDown();
+  props.AgeDown()
 }
 
 export const ageUpDispatch = (props) => {
-    props.AgeUp();
+  props.AgeUp()
 }
 
-const MapDispatchToProps = (dispatch) => {
-    return {
-        AgeUp: () => dispatch(ageUp),
-        AgeDown: () => dispatch(ageDown)
-    }
-}
+const MapDispatchToProps = (dispatch) => ({
+    AgeUp: () => dispatch(ageUp),
+    AgeDown: () => dispatch(ageDown),
+  })
 
-export  default connect( MapDispatchToProps)(ageDownDispatch);
-
-
-
-
-
+export default connect(MapDispatchToProps)(ageDownDispatch)

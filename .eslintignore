@@ -1,0 +1,5 @@
+public/*
+flow-typed/*
+
+# GraphQL ESLint files using @client directive (Apollo Link State)
+# Related issue: https://github.com/apollographql/eslint-plugin-graphql/issues/99

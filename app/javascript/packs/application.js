@@ -2,6 +2,7 @@
 // like app/views/layouts/application.html.erb. All it does is render <div>Hello React</div> at the bottom
 // of the page.
 
+// @flow
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
