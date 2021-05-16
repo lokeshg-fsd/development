@@ -36,37 +36,38 @@ const Register = (props) => {
       dispatch({ type: 'name' })
 
       return false
-    } if (
-      resultnp === false &&
-      (state.password === state.confirm) === false
-    ) {
+    }
+    if (resultnp === false && (state.password === state.confirm) === false) {
       alert('Invalid Password')
       dispatch({ type: 'password' })
       dispatch({ type: 'confirm' })
 
       return false
-    } if (resultu === false) {
+    }
+    if (resultu === false) {
       alert('Invalid Username')
       dispatch({ type: 'username' })
 
       return false
-    } if (resultph === false) {
+    }
+    if (resultph === false) {
       alert('invalid Phone ')
       dispatch({ type: 'phone' })
 
       return false
-    } if (resultue === false) {
+    }
+    if (resultue === false) {
       alert('invalid Email')
       dispatch({ type: 'email' })
 
       return false
     }
 
- return true
+    return true
   }
   const handleEdit = () => {
     const newdata = []
-      let count = 0
+    let count = 0
     const data = JSON.parse(localStorage.getItem('data'))
 
     data.map((obj) => {
@@ -86,7 +87,7 @@ const Register = (props) => {
     if (count > 0) {
       localStorage.removeItem('data')
       localStorage.setItem('data', JSON.stringify(newdata))
-      alert(`${state.name } Your  Data is Updated,   Check the Updated Data `)
+      alert(`${state.name} Your  Data is Updated,   Check the Updated Data `)
       dispatch({ type: 'edit', payload: { value: false } })
       props.viewData()
     } else {
@@ -103,7 +104,7 @@ const Register = (props) => {
       newdata.push(obj)
       localStorage.removeItem('data')
       localStorage.setItem('data', JSON.stringify(newdata))
-      alert(`${state.name } Your  data was saved. you  can View the Data`)
+      alert(`${state.name} Your  data was saved. you  can View the Data`)
       props.viewData()
     }
   }
@@ -141,7 +142,7 @@ const Register = (props) => {
 
           data.push(obj)
           localStorage.setItem('data', JSON.stringify(data))
-          alert(`${state.name } Your data was saved. you  can View the Data`)
+          alert(`${state.name} Your data was saved. you  can View the Data`)
           props.viewData()
         }
       } else {
@@ -154,7 +155,7 @@ const Register = (props) => {
           password: state.password,
         })
 
-        alert(`${data1 } Unable to Process`)
+        alert(`${data1} Unable to Process`)
       }
     } catch (e) {
       alert(e)
@@ -172,7 +173,8 @@ const Register = (props) => {
             id="outlined-basic"
             label="Enter Name"
             onChange={(e) =>
-              dispatch({ type: 'name', payload: { value: e.target.value } })}
+              dispatch({ type: 'name', payload: { value: e.target.value } })
+            }
             size="small"
             style={{ margin: '10px' }}
             value={state.name}
@@ -185,7 +187,8 @@ const Register = (props) => {
             id="outlined-basic"
             label="Enter UserName"
             onChange={(e) =>
-              dispatch({ type: 'user', payload: { value: e.target.value } })}
+              dispatch({ type: 'user', payload: { value: e.target.value } })
+            }
             size="small"
             style={{ margin: '10px' }}
             value={state.username}
@@ -198,7 +201,8 @@ const Register = (props) => {
             id="outlined-basic"
             label="Enter Email"
             onChange={(e) =>
-              dispatch({ type: 'email', payload: { value: e.target.value } })}
+              dispatch({ type: 'email', payload: { value: e.target.value } })
+            }
             size="small"
             style={{ margin: '10px' }}
             type="email"
@@ -243,7 +247,8 @@ const Register = (props) => {
             id="outlined-basic"
             label="Enter Phone"
             onChange={(e) =>
-              dispatch({ type: 'phone', payload: { value: e.target.value } })} //
+              dispatch({ type: 'phone', payload: { value: e.target.value } })
+            } //
             size="small"
             style={{ margin: '10px' }}
             value={state.phone}
@@ -256,7 +261,8 @@ const Register = (props) => {
             id="outlined-basic"
             label="Enter Password"
             onChange={(e) =>
-              dispatch({ type: 'password', payload: { value: e.target.value } })} //
+              dispatch({ type: 'password', payload: { value: e.target.value } })
+            } //
             size="small"
             style={{ margin: '10px' }}
             type="password"
@@ -270,7 +276,8 @@ const Register = (props) => {
             id="outlined-basic"
             label="Enter Confirm Password "
             onChange={(e) =>
-              dispatch({ type: 'confirm', payload: { value: e.target.value } })} //
+              dispatch({ type: 'confirm', payload: { value: e.target.value } })
+            } //
             size="small"
             style={{ margin: '10px' }}
             type="password"

@@ -75,10 +75,7 @@ const Login = () => {
     let exist = false
 
     data.map((obj) => {
-      if (
-        obj.username === state.username &&
-        obj.password === state.password
-      ) {
+      if (obj.username === state.username && obj.password === state.password) {
         dispatch({ type: 'login', payload: { value: true } })
         exist = true
         // alert("User Found");
@@ -123,7 +120,8 @@ const Login = () => {
             <Button
               color="inherit"
               onClick={() =>
-                dispatch({ type: 'login', payload: { value: false } })}
+                dispatch({ type: 'login', payload: { value: false } })
+              }
             >
               Logout <LockOutlined />
             </Button>
@@ -139,7 +137,8 @@ const Login = () => {
           <ViewData
             editHandler={editHandler}
             logout={() =>
-              dispatch({ type: 'login', payload: { value: false } })}
+              dispatch({ type: 'login', payload: { value: false } })
+            }
             return={() => dispatch({ type: 'view', payload: { value: false } })}
             styles={classes}
           />
@@ -149,22 +148,26 @@ const Login = () => {
             edit={state.edit}
             email={state.email}
             logout={() =>
-              dispatch({ type: 'login', payload: { value: false } })}
+              dispatch({ type: 'login', payload: { value: false } })
+            }
             name={state.name}
             password={state.password}
             phone={state.phone}
             styles={classes}
             username={state.username}
             viewData={() =>
-              dispatch({ type: 'view', payload: { value: true } })}
+              dispatch({ type: 'view', payload: { value: true } })
+            }
           />
         ) : (
           <Register
             logout={() =>
-              dispatch({ type: 'login', payload: { value: false } })}
+              dispatch({ type: 'login', payload: { value: false } })
+            }
             styles={classes}
             viewData={() =>
-              dispatch({ type: 'view', payload: { value: true } })}
+              dispatch({ type: 'view', payload: { value: true } })
+            }
           />
         )
       ) : (
@@ -177,7 +180,8 @@ const Login = () => {
               id="outlined-basic"
               label="Enter UserName"
               onChange={(e) =>
-                dispatch({ type: 'user', payload: { value: e.target.value } })}
+                dispatch({ type: 'user', payload: { value: e.target.value } })
+              }
               size="small"
               style={{ margin: '10px' }}
               value={state.username}
@@ -193,7 +197,8 @@ const Login = () => {
                 dispatch({
                   type: 'password',
                   payload: { value: e.target.value },
-                })}
+                })
+              }
               size="small"
               style={{ margin: '10px' }}
               type="password"
