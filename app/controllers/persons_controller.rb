@@ -51,19 +51,11 @@ class PersonsController < ApplicationController
   end
 
   def create
-    created = Person.where('email = ?', params[:email])
-    para = ActionController::Parameters.new({ person: params })
-    permision = para.require(:person).permit(:email)
-    # byebug
+    created = Person.where('email = ?', params[:user][:email])
+    permision = params.require(:user).permit(:email)
+
     if permision.permitted? && created.empty? && !permision.empty?
-      person = Person.create({
-                               lastName: params[:lastName],
-                               firstName: params[:firstName],
-                               status: params[:status] || 0,
-                               address: params[:address] || 'None',
-                               userType: params[:userType] || 'user',
-                               email: params[:email],
-                             })
+      person = Person.create(params[:user])
       render json: { data: person, response: 'SuccsessFully Created User' }
 
     elsif !permision.permitted? || permision.empty?
@@ -74,13 +66,14 @@ class PersonsController < ApplicationController
   end
 
   def update
-    person = Person.find_by(email: params[:email])
-    if params.key?(:email) && person
-      person.lastName = params[:lastName] || person.lastName
-      person.firstName = params[:firstName] || person.firstName
-      person.status = params[:status] || person.status
-      person.address = params[:address] || person.address
-      person.userType = params[:userType] || person.userType
+    person = Person.find_by(email: params[:user][:email])
+    user = params[:user]
+    if user.key?(:email) && person
+      person.lastName = user[:lastName] || person.lastName
+      person.firstName = user[:firstName] || person.firstName
+      person.status = user[:status] || person.status
+      person.address = user[:address] || person.address
+      person.userType = user[:userType] || person.userType
       person.save
       render json: { message: 'Updated SuccessFully', data: person }
     elsif render json: { message: 'Record Not Found or Invalid Email', para: params, data: person }
