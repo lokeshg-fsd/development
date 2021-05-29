@@ -1,17 +1,22 @@
 // @flow
 
 import { useState, useEffect, useRef } from 'react'
+import isEqual from 'lodash/isEqual'
 
-function useCustomFetch(url: string) {
+import { getCSRFFetchOptions } from 'common/csrf'
+import { CONTENT_TYPE_JSON, POST } from '../Data'
+
+function useCustomFetch(url: string, params?: *) {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [isReload, setIsReload] = useState<boolean>(true)
   const urlRef = useRef<string>(url)
+  const paramsRef = useRef<*>(params)
 
-  async function customFetch(api) {
+  async function customFetch(api, options) {
     try {
-      const response = await fetch(api)
+      const response = options ? await fetch(api, options) : await fetch(api)
       const responseData = await response.json()
 
       setIsReload(false)
@@ -30,19 +35,32 @@ function useCustomFetch(url: string) {
   }
 
   useEffect(() => {
-    if (isReload) {
+    if (
+      isReload ||
+      urlRef.current !== url ||
+      !isEqual(params, paramsRef.current)
+    ) {
+      paramsRef.current = params
       urlRef.current = url
       reload()
     }
-  }, [isReload, url])
+  }, [isReload, params, url])
 
   useEffect(() => {
     if (isReload) {
       if (url) {
-        customFetch(url)
+        const options = params
+          ? getCSRFFetchOptions({
+              method: POST,
+              headers: { 'Content-Type': CONTENT_TYPE_JSON },
+              body: JSON.stringify(params),
+            })
+          : null
+
+        customFetch(url, options)
       }
     }
-  }, [url, isReload])
+  }, [url, isReload, params])
 
   return [data, loading, reload, error]
 }

@@ -1,3 +1,5 @@
+// @flow
+
 export default function APIData() {
   const Data = [
     {
@@ -70,10 +72,11 @@ export default function APIData() {
   Data.forEach((item, index) => {
     Data.forEach((itemData) => {
       const { id, name } = itemData
+      // eslint-disable-next-line no-magic-numbers
       const customId = id + index * 10
       const customEmail = itemData.email.split('@')
 
-      customEmail[0] = customEmail[0] + customId
+      customEmail[0] += customId
 
       const email = customEmail.toString().replace(',', '@')
 
@@ -85,6 +88,7 @@ export default function APIData() {
           email,
           role: 'Manager',
         })
+        // eslint-disable-next-line no-magic-numbers
       } else if (id % 3 === 0) {
         dataProvider.push({
           id: customId,
@@ -108,12 +112,18 @@ export default function APIData() {
   return dataProvider
 }
 
+// request Types
+export const POST: string = 'POST'
+export const SAME_ORIGIN: CredentialsType = 'same-origin'
+export const CONTENT_TYPE_JSON: string = 'application/json'
+
 export const customUrlOrigin = window.location.origin
 
-export const fetchPersonsAPI = customUrlOrigin + 'persons'
+// API Paths
+export const fetchPersonsAPI = `${customUrlOrigin}/persons`
 
-export const DestroyPersonAPI = customUrlOrigin + 'remove_employee?email='
+export const DestroyPersonAPI = `${customUrlOrigin}/remove_employee?email=`
 
-export const newEmployeeAPI = customUrlOrigin + 'new_employee'
+export const newEmployeeAPI = `${customUrlOrigin}/new_employee`
 
-export const updateRecordAPI = customUrlOrigin + 'update_employee'
+export const updateRecordAPI = `${customUrlOrigin}/update_employee`
