@@ -15,11 +15,11 @@ class ReduxConcepts extends React.Component {
   }
 }
 const MapStateToProps = (state) => ({
-    age: state.age,
-  })
+  age: state.age,
+})
 const MapDispatchToProps = (dispatch) => ({
-    AgeUp: () => dispatch({ type: 'ageincrement' }),
-    AgeDown: () => dispatch({ type: 'agedecrement' }),
-  })
+  AgeUp: () => dispatch({ type: 'ageincrement' }),
+  AgeDown: () => dispatch({ type: 'agedecrement' }),
+})
 
 export default connect(MapStateToProps, MapDispatchToProps)(ReduxConcepts)

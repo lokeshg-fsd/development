@@ -14,8 +14,8 @@ export const ageUpDispatch = (props) => {
 }
 
 const MapDispatchToProps = (dispatch) => ({
-    AgeUp: () => dispatch(ageUp),
-    AgeDown: () => dispatch(ageDown),
-  })
+  AgeUp: () => dispatch(ageUp),
+  AgeDown: () => dispatch(ageDown),
+})
 
 export default connect(MapDispatchToProps)(ageDownDispatch)

@@ -1,7 +1,6 @@
 // @flow
 
 import { useState, useEffect, useRef } from 'react'
-import isEqual from 'lodash/isEqual'
 
 function useCustomFetch(url: string) {
   const [data, setData] = useState(null)

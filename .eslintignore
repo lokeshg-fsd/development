@@ -1,4 +1,5 @@
 public/*
+app/assets/javascripts/*.js
 flow-typed/*
 
 # GraphQL ESLint files using @client directive (Apollo Link State)

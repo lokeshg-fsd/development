@@ -1,0 +1,61 @@
+.HeaderBar, .RowData {
+    background-color: beige;
+    padding-left: 25px;
+    width: '95%';
+    align-items: center;
+    flex-direction: row;
+    text-align: center;
+}
+
+.HeaderBar {
+    line-height: 2;
+}
+
+.RowData {
+    height: 30px;
+}
+
+.Footer {
+    display: 'flexbox !important';
+    flex-direction: row;
+    justify-items: stretch;
+    align-items: stretch;
+}
+
+.DeleteButton {
+    border: black;
+    border-style: ridge;
+    border-radius: 5px;
+    width: 150px;
+    height: 30px;
+    background: orangered;
+    font-size: 16px;
+    color: midnightblue;
+    font-weight: bolder;
+}
+
+
+.Icon {
+    align-items: center;
+    flex-direction: row;
+    padding-left: 15px;
+}
+
+tr {
+    border: 1px solid #ddd;
+}
+
+tr:hover {
+    background-color: gray; 
+}
+
+img {
+    width: 25px;
+    height: 25px;
+}
+
+td, th {
+    text-align: center;
+    width: 150px;
+}
+

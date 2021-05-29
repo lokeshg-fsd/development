@@ -46,40 +46,40 @@ const ViewData = (props) => {
             <th> </th>
           </tr>
           {JSON.parse(localStorage.getItem('data')).map((report) => (
-              <tr>
-                <td> {report.username} </td>
-                <td> {report.name} </td>
-                <td>{report.email} </td>
-                <td>{report.age} </td>
-                <td> {report.phone} </td>
-                <td>{report.password}</td>
-                <td> {report.password} </td>
-                <td>
-                  <Button
-                    color="primary"
-                    onClick={() => props.editHandler(report)}
-                    style={{ margin: '10px' }}
-                    variant="contained"
-                  >
-                    {' '}
-                    <EditIcon />{' '}
-                  </Button>
-                </td>
-                <td
-                  onClick={() => deleteReport(report)}
-                  title="Delete this Record"
+            <tr>
+              <td> {report.username} </td>
+              <td> {report.name} </td>
+              <td>{report.email} </td>
+              <td>{report.age} </td>
+              <td> {report.phone} </td>
+              <td>{report.password}</td>
+              <td> {report.password} </td>
+              <td>
+                <Button
+                  color="primary"
+                  onClick={() => props.editHandler(report)}
+                  style={{ margin: '10px' }}
+                  variant="contained"
                 >
-                  <Button
-                    color="primary"
-                    style={{ margin: '10px' }}
-                    variant="contained"
-                  >
-                    {' '}
-                    <DeleteIcon />{' '}
-                  </Button>
-                </td>
-              </tr>
-            ))}
+                  {' '}
+                  <EditIcon />{' '}
+                </Button>
+              </td>
+              <td
+                onClick={() => deleteReport(report)}
+                title="Delete this Record"
+              >
+                <Button
+                  color="primary"
+                  style={{ margin: '10px' }}
+                  variant="contained"
+                >
+                  {' '}
+                  <DeleteIcon />{' '}
+                </Button>
+              </td>
+            </tr>
+          ))}
         </table>
       ) : (
         isDeleted

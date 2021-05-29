@@ -75,10 +75,7 @@ const Login = () => {
     let exist = false
 
     data.map((obj) => {
-      if (
-        obj.username === state.username &&
-        obj.password === state.password
-      ) {
+      if (obj.username === state.username && obj.password === state.password) {
         dispatch({ type: 'login', payload: { value: true } })
         exist = true
         // alert("User Found");

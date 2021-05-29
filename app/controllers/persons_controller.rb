@@ -2,8 +2,7 @@
 
 class PersonsController < ApplicationController
   def delete
-    persons = Person.where('email = ?', params[:email])
-    persons&.destroy
+    persons = Person.where(email: params[:email]).destroy_all
     if persons.empty?
       render json: { mesage: 'No Record Found' }
     elsif render json: { message: 'Deleted Successfully' }
@@ -51,12 +50,15 @@ class PersonsController < ApplicationController
   end
 
   def create
-    created = Person.where('email = ?', params[:user][:email])
-    permision = params.require(:user).permit(:email)
+    created = Person.where(email: params[:person][:email])
+    permision = params.require(:person).permit(:email, :lastName, :firstName, :address, :blood_id, :branch_id, :status, :userType)
+    # byebug
+    if created.empty? && permision.permitted? 
+      # byebug
+      person = Person.create(permision)
 
-    if permision.permitted? && created.empty? && !permision.empty?
-      person = Person.create(params[:user])
-      render json: { data: person, response: 'SuccsessFully Created User' }
+
+      render json: { data: person, status: 'SuccsessFully Created User' }
 
     elsif !permision.permitted? || permision.empty?
       render json: { error: 'Permision Denied Due To Invalid Params', permision: permision }
