@@ -1,22 +1,6 @@
 public/*
-app/javascript/reports/Utils/GridExport/excel-builder
 app/assets/javascripts/*.js
-app/assets/javascripts/request_manager
-app/assets/javascripts/rails_admin
 flow-typed/*
 
 # GraphQL ESLint files using @client directive (Apollo Link State)
 # Related issue: https://github.com/apollographql/eslint-plugin-graphql/issues/99
-app/javascript/booking_manager/components/Booking/mutations/approveMock.graphql
-app/javascript/booking_manager/components/Booking/mutations/approveSeriesMock.graphql
-app/javascript/booking_manager/components/Booking/mutations/cancelMock.graphql
-app/javascript/booking_manager/components/Booking/mutations/declineMock.graphql
-app/javascript/booking_manager/components/Booking/mutations/declineSeriesMock.graphql
-app/javascript/booking_manager/components/Booking/mutations/endMock.graphql
-app/javascript/booking_manager/components/Booking/mutations/updateMock.graphql
-app/javascript/manager/components/Snackbars/Snackbars.graphql
-app/javascript/visual_directory/components/home/Events/useEvents/cachedEvents.graphql
-app/javascript/common/components/AssignedNeighborhoodMembersAutocomplete/Suggestions/useMemberSearch/NeighborhoodProjectedMemberSearch.graphql
-app/javascript/forms/dialogs/neighborhood/BaseForm/useProjectedMatchedMembers/projectedMatchedMembers.graphql
-app/javascript/forms/dialogs/neighborhood/useFacilities/facilities.graphql
-app/javascript/forms/dialogs/neighborhood/useNeighborhoodQuery/neighborhood.graphql

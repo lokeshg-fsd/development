@@ -1,4 +1,6 @@
-var path = require('path')
+// @flow
+
+const path = require('path')
 
 module.exports = {
   extends: [
@@ -56,6 +58,7 @@ module.exports = {
     semi: ['error', 'never'],
     'semi-style': ['error', 'first'],
     'no-unexpected-multiline': ['error'],
+    // eslint-disable-next-line no-magic-numbers
     'max-len': [2, 120, 4],
     'no-magic-numbers': [
       2,
@@ -145,6 +148,7 @@ module.exports = {
     'react/no-did-update-set-state': [2],
     'react/no-direct-mutation-state': [2],
     'react/no-is-mounted': [2],
+    // eslint-disable-next-line no-dupe-keys
     'react/prefer-es6-class': [2],
     'react/self-closing-comp': [2],
     'react/require-default-props': [0],
@@ -166,7 +170,6 @@ module.exports = {
     'react/jsx-indent': [0],
     'react/jsx-key': [2],
     'react/jsx-max-props-per-line': [0],
-    'react/jsx-no-bind': [2],
     'react/jsx-no-duplicate-props': [2, { ignoreCase: false }],
     'react/jsx-one-expression-per-line': [0],
     'react/jsx-curly-spacing': [2, 'never'],
@@ -254,7 +257,6 @@ module.exports = {
     //     schemaJson: require('./schema.json'),
     //   }],
   },
-  parser: 'babel-eslint',
   globals: {
     CKEDITOR: true,
     jest: true,

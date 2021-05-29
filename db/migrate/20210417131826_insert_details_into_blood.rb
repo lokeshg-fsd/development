@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class InsertDetailsIntoBlood < ActiveRecord::Migration[6.1]
-  BLOOD_GROUPS = [].freeze
+  BLOOD_GROUPS = []
 
   BLOOD_GROUPS.push({ group: 'A+', value: 10, description: 'A+ Blood Group' })
   BLOOD_GROUPS.push({ group: 'A-', value: 20, description: 'A- Blood Group' })
