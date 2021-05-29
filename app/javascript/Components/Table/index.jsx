@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+// @flow
+
+import React, { useEffect, useState, useMemo } from 'react'
 
 import '../Styles.css'
 
@@ -7,14 +9,52 @@ import ReportHeader from './ReportHeader'
 import ReportBody from './ReportBody'
 import EditPopup from './EditPopOver'
 import DeleteButton from './Footer/DeleteButton'
-import Paginate from './Footer/Paginate'
 
-export default function Table({ fetchData }) {
+import { fetchPersonsAPI } from '../Data'
+import useCustomFetch from '../hooks/useCustomFetch'
+import deleteEmployee from './lib/deleteEmployee'
+
+// eslint-disable-next-line no-unused-vars
+export default function Table({ fetchData }: *) {
   const [selectAll, setSelectAll] = useState(false)
   const [items, setItems] = useState([])
   const [editItem, setEdititem] = useState(null)
   const [open, setOpen] = useState(false)
   const [searchData, setSearchData] = useState('')
+
+  const [data, loading, reload] = useCustomFetch(fetchPersonsAPI)
+
+  const fetchAPIData = useMemo(() => {
+    if (loading) {
+      return []
+    }
+    const details = (data?.data || []).map((item) => {
+      const { person, branch, blood } = item
+
+      return {
+        id: person.id,
+        name: person.firstName + person.lastName,
+        email: person.email,
+        checked: person.status,
+        role: branch?.name || blood.group,
+      }
+    })
+
+    if (searchData) {
+      return details.filter(
+        (item) =>
+          item.name.includes(searchData) ||
+          item.email.includes(searchData) ||
+          item.role.includes(searchData),
+      )
+    }
+
+    return details
+  }, [data?.data, loading, searchData])
+
+  useEffect(() => {
+    setItems(fetchAPIData)
+  }, [fetchAPIData])
 
   function handleOnEdit(item) {
     setEdititem(items.find((current) => current.id === item.id))
@@ -33,22 +73,18 @@ export default function Table({ fetchData }) {
         : item,
     )
 
+    // eslint-disable-next-line no-alert
     alert('SuccessFully Saved Your Changes')
     setItems(saved)
     setOpen(false)
   }
 
-  function handleOnDelete(id) {
-    const itemToDelete = items.find((item) => item.id === id)
+  function handleOnDelete(email: string) {
+    const response = deleteEmployee(email)
 
-    if (itemToDelete) {
-      const filterItems = items.filter((item) => item.id !== itemToDelete.id)
-
-      alert('SuccessFully Deleted')
-      setItems(filterItems)
-    } else {
-      alert('Not Found Relevent Data')
-    }
+    // eslint-disable-next-line no-alert
+    alert(response.message, 'Deleted Succseffully')
+    reload()
   }
 
   function handleOnDeleteSelected() {
@@ -65,23 +101,18 @@ export default function Table({ fetchData }) {
       <ReportHeader isChecked={selectAll} setIsChecked={setSelectAll} />
       <ReportBody
         handleOnDelete={handleOnDelete}
-        items={items}
         handleOnEdit={handleOnEdit}
+        items={items}
       />
       {open && (
         <EditPopup
-          item={editItem}
           handleOnClose={() => setOpen(false)}
           handleOnSave={handleOnSave}
+          item={editItem}
         />
       )}
       <div className="Footer">
         <DeleteButton handleOnClick={handleOnDeleteSelected} />
-        <Paginate
-          fetchData={fetchData}
-          searchData={searchData}
-          setItems={setItems}
-        />
       </div>
     </div>
   )

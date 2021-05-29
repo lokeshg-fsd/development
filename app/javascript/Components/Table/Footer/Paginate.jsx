@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react'
 
 import ReactPaginate from 'react-paginate'
@@ -13,6 +15,7 @@ export default class App extends Component {
     }
     this.handlePageClick = this.handlePageClick.bind(this)
   }
+
   receivedData() {
     const APIData = this.props.fetchData()
     const data =
@@ -24,16 +27,9 @@ export default class App extends Component {
               item.role.includes(this.state.searchData),
           )
         : APIData
-    const slice = data.slice(
-      this.state.offset,
-      this.state.offset + this.state.perPage,
-    )
 
-    this.setState({
-      pageCount: Math.ceil(data.length / this.state.perPage),
-    })
 
-    this.props.setItems(slice)
+    this.props.setItems(data)
   }
 
   UNSAFE_componentWillReceiveProps({ searchData }) {
@@ -51,7 +47,7 @@ export default class App extends Component {
     this.setState(
       {
         currentPage: selectedPage,
-        offset: offset,
+        offset,
       },
       () => {
         this.receivedData()
@@ -62,21 +58,22 @@ export default class App extends Component {
   componentDidMount() {
     this.receivedData()
   }
+
   render() {
     return (
       <div>
         <ReactPaginate
-          previousLabel={'prev'}
-          nextLabel={'next'}
-          breakLabel={'...'}
-          breakClassName={'break-me'}
-          pageCount={this.state.pageCount}
+          activeClassName="active"
+          breakClassName="break-me"
+          breakLabel="..."
+          containerClassName="pagination"
           marginPagesDisplayed={2}
-          pageRangeDisplayed={2}
+          nextLabel="next"
           onPageChange={this.handlePageClick}
-          containerClassName={'pagination'}
-          subContainerClassName={'pages pagination'}
-          activeClassName={'active'}
+          pageCount={this.state.pageCount}
+          pageRangeDisplayed={2}
+          previousLabel="prev"
+          subContainerClassName="pages pagination"
         />
       </div>
     )

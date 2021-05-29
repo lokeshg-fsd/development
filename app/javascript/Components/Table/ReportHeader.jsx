@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 
 export default function ReportHeader({ isChecked, setIsChecked }) {
@@ -10,9 +11,9 @@ export default function ReportHeader({ isChecked, setIsChecked }) {
       <th>
         {' '}
         <input
-          type="checkBox"
           checked={isChecked}
           onChange={handleOnChange}
+          type="checkBox"
         />{' '}
       </th>
       <th> Name </th>
