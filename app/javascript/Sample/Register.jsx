@@ -173,8 +173,7 @@ const Register = (props) => {
             id="outlined-basic"
             label="Enter Name"
             onChange={(e) =>
-              dispatch({ type: 'name', payload: { value: e.target.value } })
-            }
+              dispatch({ type: 'name', payload: { value: e.target.value } })}
             size="small"
             style={{ margin: '10px' }}
             value={state.name}
@@ -187,8 +186,7 @@ const Register = (props) => {
             id="outlined-basic"
             label="Enter UserName"
             onChange={(e) =>
-              dispatch({ type: 'user', payload: { value: e.target.value } })
-            }
+              dispatch({ type: 'user', payload: { value: e.target.value } })}
             size="small"
             style={{ margin: '10px' }}
             value={state.username}
@@ -201,8 +199,7 @@ const Register = (props) => {
             id="outlined-basic"
             label="Enter Email"
             onChange={(e) =>
-              dispatch({ type: 'email', payload: { value: e.target.value } })
-            }
+              dispatch({ type: 'email', payload: { value: e.target.value } })}
             size="small"
             style={{ margin: '10px' }}
             type="email"
@@ -247,8 +244,7 @@ const Register = (props) => {
             id="outlined-basic"
             label="Enter Phone"
             onChange={(e) =>
-              dispatch({ type: 'phone', payload: { value: e.target.value } })
-            } //
+              dispatch({ type: 'phone', payload: { value: e.target.value } })} //
             size="small"
             style={{ margin: '10px' }}
             value={state.phone}
@@ -261,8 +257,7 @@ const Register = (props) => {
             id="outlined-basic"
             label="Enter Password"
             onChange={(e) =>
-              dispatch({ type: 'password', payload: { value: e.target.value } })
-            } //
+              dispatch({ type: 'password', payload: { value: e.target.value } })} //
             size="small"
             style={{ margin: '10px' }}
             type="password"
@@ -276,8 +271,7 @@ const Register = (props) => {
             id="outlined-basic"
             label="Enter Confirm Password "
             onChange={(e) =>
-              dispatch({ type: 'confirm', payload: { value: e.target.value } })
-            } //
+              dispatch({ type: 'confirm', payload: { value: e.target.value } })} //
             size="small"
             style={{ margin: '10px' }}
             type="password"
