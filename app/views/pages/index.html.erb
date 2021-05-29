@@ -1,22 +1,24 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <title>Pages - Persons</title>
+        <title>Pages - Persons</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <div id="container">
-    <%= javascript_pack_tag 'hello_react' %> 
-</div>
+    <%= javascript_pack_tag 'reports' %> 
 
-<div id="second-container">
-    <!-- This element's contents will be replaced with the second component. -->
-    <%= javascript_pack_tag 'hello_react' %> 
-</div>
   </head>
-
   <body>
-    <%= yield %>
+  <%= yield %>
+    <!-- Display a message if JS has been disabled on the browser. -->
+    <noscript>
+      If you're seeing this message, that means <strong>JavaScript has been disabled on your browser</strong>, please     <strong>enable JS</strong> to make this app work.
+    </noscript>
+
+    <!-- The app hooks into this div -->
+    <div id="app">
+    <%= javascript_packs_with_chunks_tag 'reports' %>
+    </div>
   </body>
 </html>
