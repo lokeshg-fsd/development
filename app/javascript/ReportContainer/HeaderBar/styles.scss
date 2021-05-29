@@ -1,0 +1,34 @@
+.baseDisabled {
+  pointer-events: none;
+  min-height: 42px;
+}
+
+.root {
+  height: 42px;
+}
+
+.base {
+  pointer-events: all;
+  min-height: 42px;
+}
+
+.headerItemContainer {
+  display: flex;
+  flex: 1;
+}
+
+.navMenuContainer {
+  background-color: #4971ab;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.navItemsDisabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.navItem {
+  padding: 8px 0px;
+}
