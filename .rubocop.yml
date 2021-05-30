@@ -5,6 +5,7 @@ require:
 
 # TODO: turn linting on for bin/
 AllCops:
+  NewCops: enable
   TargetRubyVersion: 2.6
   Exclude:
     - 'app/javascript/**/*'

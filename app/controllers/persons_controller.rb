@@ -29,7 +29,7 @@ class PersonsController < ApplicationController
   end
 
   def by_status
-    persons = Person.includes(:blood).where('status = ?', Integer(params[:as] || 1))
+    persons = Person.includes(:blood).where(status: Integer(params[:as] || 1))
     maped_data = persons.map do |p|
       {
         firstName: p.firstName,
