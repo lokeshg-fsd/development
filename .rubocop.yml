@@ -28,6 +28,9 @@ AllCops:
 Lint/AmbiguousBlockAssociation:
   Enabled: false
 
+Style/RedundantBegin:
+  Exclude:
+    - 'app/controllers/graphql_controller.rb'
 # TODO: Enable - needs a decision on which replacement to use (CGI.escape outputs '+' instead of '%20' for ' ')
 Lint/UriEscapeUnescape:
   Enabled: false
