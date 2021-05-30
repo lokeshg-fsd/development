@@ -51,15 +51,12 @@ class PersonsController < ApplicationController
 
   def create
     created = Person.where(email: params[:person][:email])
-    permision = params.require(:person).permit(:email, :lastName, :firstName, :address, :blood_id, :branch_id, :status, :userType)
-    # byebug
-    if created.empty? && permision.permitted? 
-      # byebug
+    permision = params.require(:person).permit(:email, :lastName, :firstName, :address,
+                                               :blood_id, :branch_id, :status, :userType)
+
+    if created.empty? && permision.permitted?
       person = Person.create(permision)
-
-
       render json: { data: person, status: 'SuccsessFully Created User' }
-
     elsif !permision.permitted? || permision.empty?
       render json: { error: 'Permision Denied Due To Invalid Params', permision: permision }
     elsif !created.empty?
@@ -78,7 +75,11 @@ class PersonsController < ApplicationController
       person.userType = user[:userType] || person.userType
       person.save
       render json: { message: 'Updated SuccessFully', data: person }
-    elsif render json: { message: 'Record Not Found or Invalid Email', para: params, data: person }
+    elsif render json: {
+      message: 'Record Not Found or Invalid Email',
+      para: params,
+      data: person,
+    }
     end
   end
 end
