@@ -4,6 +4,11 @@ Rails.application.routes.draw do
   devise_for :users
   root to: 'pages#index'
 
+  if Rails.env.development?
+    mount GraphiQL::Rails::Engine, at: '/graphiql', graphql_path: 'graphql#execute'
+  end
+  post '/graphql', to: 'graphql#execute'
+
   get 'pages', to: 'pages#index'
   get 'persons', to: 'persons#index'
   get 'persons/status', to: 'persons#by_status'
