@@ -8,7 +8,14 @@ import deleteIcon from '../SVG/Delete.svg'
 
 export default function Actions({ handleOnEdit, handleOnDelete }: *) {
   return (
-    <div className="Icon">
+    <div
+      className="Icon"
+      style={{
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingLeft: '15px',
+      }}
+    >
       <img
         alt="Edit"
         onClick={handleOnEdit}

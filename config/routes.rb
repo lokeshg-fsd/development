@@ -2,12 +2,16 @@
 
 Rails.application.routes.draw do
   devise_for :users
-  root to: 'pages#index'
+  # root to: 'pages#index'
 
   if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: '/graphiql', graphql_path: 'graphql#execute'
   end
   post '/graphql', to: 'graphql#execute'
+
+  devise_scope :user do
+    get '/signout', to: 'devise/sessions#destroy', as: :signout
+  end
 
   get 'pages', to: 'pages#index'
   get 'persons', to: 'persons#index'

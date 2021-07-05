@@ -1,3 +1,85 @@
 // Place all the styles related to the pages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+.field {
+  width: 340px;
+  height: 36px;
+  background-color: #c1f0f5;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+input {
+  background-color: white !important;
+  color: blueviolet !important;
+  height: 24px !important;
+  font-size: 18px;
+}
+
+form {
+  background-image: -moz-element();
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+input[type='submit'] {
+  border: solid 2px #ffffff;
+  width: 180px !important;
+  height: 36px !important;
+  background-color: #0c0050 !important;
+  color: #ffffff !important;
+}
+
+label {
+  left: 0px;
+  right: auto;
+  width: 100px;
+  font-size: 18px;
+  font-family: ui-sans-serif;
+  font-style: oblique;
+  color: slateblue;
+}
+
+.box1 {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background: linear-gradient(142.27deg, #1461e8 0%, #518ef8 100%);
+}
+
+.box2 {
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  right: 0px;
+  top: 0px;
+  background: #ffffff; // Pure White
+}
+
+.flex-box {
+  width: auto;
+  height: auto;
+}
+
+.logout { // 'logout'
+  position: fixed;
+  display: block;
+  font-style: italic;
+  height: 34px;
+  right: 2px;
+  background-color: tomato;
+  border: tomato;
+  border-style: solid;
+  border-radius: 5px;
+  font-size: medium;
+  font-weight: bold;
+  /* font: caption; */
+  font-family: serif;
+}

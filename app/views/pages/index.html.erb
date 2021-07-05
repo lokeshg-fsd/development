@@ -17,6 +17,7 @@
     </noscript>
 
     <!-- The app hooks into this div -->
+    <%= link_to '<button type="button" class="logout" >Log Out</button>'.html_safe, '/signout', id: 'logout', style: "width: 10%;"  %>
     <div id="app">
     <%= javascript_packs_with_chunks_tag 'reports' %>
     </div>

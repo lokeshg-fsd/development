@@ -1,7 +1,6 @@
 // @flow
 
 import React, { useState } from 'react'
-import './PopupStyle.css'
 
 const EditPopup = ({ item, handleOnClose, handleOnSave }: *) => {
   const [name, setName] = useState(item.name || '')

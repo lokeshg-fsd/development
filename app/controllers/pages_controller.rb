@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
 class PagesController < ApplicationController
-  def index; end
+  before_action :authenticate_user!
+  def index
+    # @page_title = 'Saver Home'
+  end
 end

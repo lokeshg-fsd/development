@@ -27,10 +27,10 @@ type Props = {
 
 export default function DetailsList({ userData, setUserData }: Props) {
   const classes = useStyles()
-  const [name, setName] = React.useState('')
+  /* const [name, setName] = React.useState('')
   const handleChange = (event) => {
     setName(event.target.value)
-  }
+  } */
 
   function handleOnChange(event, field) {
     const user = {
@@ -43,7 +43,18 @@ export default function DetailsList({ userData, setUserData }: Props) {
 
   return (
     <List className={classes.root}>
-      <TextField
+      {Object.keys(userData).map((field, index) => (
+        <TextField
+          key={index}
+          classes={{ root: classes.textField }}
+          color="primary"
+          id={`standard-${field}`}
+          label={field}
+          onChange={(event) => handleOnChange(event, field)}
+          value={userData[field]}
+        />
+      ))}
+      {/* <TextField
         classes={{ root: classes.textField }}
         color="primary"
         id="standard-firstName"
@@ -91,7 +102,7 @@ export default function DetailsList({ userData, setUserData }: Props) {
         label="Name"
         onChange={handleChange}
         value={name}
-      />
+      /> */}
     </List>
   )
 }

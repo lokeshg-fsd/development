@@ -1,11 +1,20 @@
 // @flow
 
 import React, { Fragment, useState } from 'react'
+// import { browserHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
 
 import DropDownButton from './DropdownButton'
 import Popover from './Popover'
 
-export default function CreatePerson() {
+type Props = {
+  onSaveComplete?: () => mixed,
+}
+
+export default function CreatePerson({ onSaveComplete }: Props) {
+  // eslint-disable-next-line no-unused-vars
+  // const { pathname } = useLocation()
+  const history = useHistory()
   const [anchorEl, setAnchorEl] = useState<?HTMLDivElement>(null)
 
   function handleOnClick(event: SyntheticEvent<HTMLDivElement>) {
@@ -18,6 +27,9 @@ export default function CreatePerson() {
 
   function handleOnOk() {
     setAnchorEl(null)
+    onSaveComplete()
+    history?.push('/pages')
+    // browserHistory.push('/users/sign_in')
   }
 
   return (
@@ -33,14 +45,3 @@ export default function CreatePerson() {
     </>
   )
 }
-
-/*
- required fields for people creation
-t.string "lastName"
-    t.string "firstName"
-    t.decimal "status", precision: 10
-    t.string "userType"
-    t.string "email"
-    t.text "address"
-    t.bigint "blood_id", default: 1, null: false
-    t.bigint "branch_id", null: false */

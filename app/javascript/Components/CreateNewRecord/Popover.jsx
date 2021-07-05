@@ -21,6 +21,7 @@ const Popover = ({ anchorEl, onClear, onClose, onOk, open }: Props) => {
     firstName: '',
     status: 0,
     email: '',
+    address: '',
     userType: '',
     blood_id: 1,
     branch_id: 3,

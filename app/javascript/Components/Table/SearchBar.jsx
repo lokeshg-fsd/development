@@ -3,7 +3,7 @@ import React from 'react'
 
 import CreateNew from '../CreateNewRecord'
 
-export default function SearchBar({ handleOnSearch }: *) {
+export default function SearchBar({ handleOnSearch, onRefresh }: *) {
   function handleOnChange(event) {
     if (event.key === 'Enter') {
       handleOnSearch(event.currentTarget.value)
@@ -16,10 +16,10 @@ export default function SearchBar({ handleOnSearch }: *) {
     <div>
       <input
         onKeyPress={handleOnChange}
-        placeholder="Search By name, email or role"
-        style={{ width: '75%' }}
+        placeholder="Search By Data"
+        style={{ width: '50%' }}
       />
-      <CreateNew />
+      <CreateNew onSaveComplete={onRefresh} />
       <br />
     </div>
   )

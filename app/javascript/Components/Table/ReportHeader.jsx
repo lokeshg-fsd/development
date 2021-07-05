@@ -1,25 +1,43 @@
 // @flow
-import React from 'react'
+import React, { useState } from 'react'
 
-export default function ReportHeader({ isChecked, setIsChecked }) {
-  function handleOnChange(event, checked) {
-    setIsChecked(checked)
+export default function ReportHeader({ fields, isChecked, setIsChecked }: *) {
+  const [selected, setSelected] = useState(isChecked)
+
+  function handleOnChange(event) {
+    const value = event.currentTarget.value === 'on'
+
+    setIsChecked(value)
+    setSelected(value)
   }
 
   return (
-    <div className="HeaderBar">
-      <th>
+    <div
+      className="HeaderBar"
+      style={{
+        ackgroundColor: 'beige',
+        paddingLeft: '25px',
+        width: '95%',
+        alignItems: 'center',
+        flexDirection: 'row',
+        textAlign: 'center',
+        lineHeight: 2,
+      }}
+    >
+      <th style={{ textAlign: 'center', width: '100px' }}>
         {' '}
         <input
-          checked={isChecked}
+          checked={selected}
           onChange={handleOnChange}
           type="checkBox"
         />{' '}
       </th>
-      <th> Name </th>
-      <th> Email </th>
-      <th> Role </th>
-      <th> Actions </th>
+      {fields.map((field, index) => (
+        <th key={index} style={{ textAlign: 'center', width: '150px' }}>
+          {field}
+        </th>
+      ))}
+      <th style={{ textAlign: 'center', width: '100px' }}> Actions </th>
     </div>
   )
 }

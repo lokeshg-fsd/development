@@ -14,6 +14,16 @@ import { fetchPersonsAPI } from '../Data'
 import useCustomFetch from '../hooks/useCustomFetch'
 import deleteEmployee from './lib/deleteEmployee'
 
+const DataFields = [
+  'Name',
+  'Email',
+  'Role',
+  'Address',
+  'Branch',
+  'Blood',
+  'Status',
+]
+
 // eslint-disable-next-line no-unused-vars
 export default function Table({ fetchData }: *) {
   const [selectAll, setSelectAll] = useState(false)
@@ -33,24 +43,31 @@ export default function Table({ fetchData }: *) {
 
       return {
         id: person.id,
-        name: person.firstName + person.lastName,
+        name: `${person.firstName} ${person.lastName}`,
         email: person.email,
-        checked: person.status,
-        role: branch?.name || blood.group,
+        status: person.status ? 'Active' : 'Inactive',
+        checked: selectAll || !!person.status,
+        role: person?.userType,
+        branch: branch?.name || '',
+        blood: blood.group,
+        address: person.address,
       }
     })
 
     if (searchData) {
       return details.filter(
         (item) =>
-          item.name.includes(searchData) ||
+          DataFields.find((field) =>
+            item[field.toLowerCase()]?.includes(searchData),
+          ),
+        /* item.name.includes(searchData) ||
           item.email.includes(searchData) ||
-          item.role.includes(searchData),
+          item.role.includes(searchData), */
       )
     }
 
     return details
-  }, [data?.data, loading, searchData])
+  }, [data?.data, loading, searchData, selectAll])
 
   useEffect(() => {
     setItems(fetchAPIData)
@@ -97,9 +114,14 @@ export default function Table({ fetchData }: *) {
 
   return (
     <div>
-      <SearchBar handleOnSearch={setSearchData} />
-      <ReportHeader isChecked={selectAll} setIsChecked={setSelectAll} />
+      <SearchBar handleOnSearch={setSearchData} onRefresh={reload} />
+      <ReportHeader
+        fields={DataFields}
+        isChecked={selectAll}
+        setIsChecked={setSelectAll}
+      />
       <ReportBody
+        fields={DataFields}
         handleOnDelete={handleOnDelete}
         handleOnEdit={handleOnEdit}
         items={items}
