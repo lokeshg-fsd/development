@@ -220,7 +220,7 @@ module.exports = {
     'flowtype/space-after-type-colon': ['off'],
 
     // Import
-    'import/extensions': [2, 'always', { js: 'never', jsx: 'ignorePackages' }],
+    // 'import/extensions': [2, 'always', { js: 'never', jsx: 'ignorePackages' }],
     'import/no-duplicates': [2],
     'import/no-named-as-default': [2],
     'import/no-extraneous-dependencies': [

@@ -15,10 +15,7 @@ export default function useReportDefinitions(
       item: HeaderBarItem,
       menuItem: HeaderBarMenuItem,
     ) => {
-      if (
-        reportDefinitions.length > 0 &&
-        ['home'].includes(menuItem.id)
-      ) {
+      if (reportDefinitions.length > 0 && ['home'].includes(menuItem.id)) {
         return true
       }
 

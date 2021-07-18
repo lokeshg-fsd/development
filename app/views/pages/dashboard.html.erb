@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+        <title>Pages - Persons</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= javascript_pack_tag 'dashboard' %> 
+    <%= stylesheet_pack_tag 'dashboard', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+  </head>
+  <body>
+  <%= yield %>
+    <!-- Display a message if JS has been disabled on the browser. -->
+    <noscript>
+      If you're seeing this message, that means <strong>JavaScript has been disabled on your browser</strong>, please     <strong>enable JS</strong> to make this app work.
+    </noscript>
+
+    <!-- The app hooks into this div -->
+    <div id="app">
+    <%= javascript_packs_with_chunks_tag 'dashboard' %>
+    </div>
+  </body>
+</html>

@@ -23,7 +23,7 @@ export const useDropDownStyles = makeStyles({
 
     '&:hover': {
       backgroundColor: '#8a8ae6',
-      color: '#000000'
+      color: '#000000',
     },
   },
 
