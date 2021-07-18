@@ -4,9 +4,9 @@
  * Material Dashboard React - v1.10.0 based on Material Dashboard - v1.2.0
  =========================================================
 
- * Product Page: http://www.creative-tim.com/product/material-dashboard-react
- * Copyright 2021 Creative Tim (http://www.creative-tim.com)
- * Licensed under MIT (https://github.com/creativetimofficial/material-dashboard-react/blob/master/LICENSE.md)
+ * Product Page: http://www.''-tim.com/product/material-dashboard-react
+ * Copyright 2021 '' Tim (http://www.''-tim.com)
+ * Licensed under MIT (https://github.com/''timofficial/material-dashboard-react/blob/master/LICENSE.md)
 
  =========================================================
 

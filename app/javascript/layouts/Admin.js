@@ -103,7 +103,7 @@ export default function Admin({ ...rest }) {
         handleDrawerToggle={handleDrawerToggle}
         image={image}
         logo={logo}
-        logoText="Creative Tim"
+        logoText="My Life Saver"
         open={mobileOpen}
         routes={routes}
         {...rest}
