@@ -9,8 +9,10 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      // eslint-disable-next-line react/no-unused-state
       offset: 0,
       perPage: 5,
+      // eslint-disable-next-line react/prop-types
       searchData: props.searchData,
     }
     this.handlePageClick = this.handlePageClick.bind(this)
@@ -27,7 +29,6 @@ export default class App extends Component {
               item.role.includes(this.state.searchData),
           )
         : APIData
-
 
     this.props.setItems(data)
   }

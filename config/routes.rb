@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     get '/signout', to: 'devise/sessions#destroy', as: :signout
   end
 
+  get '/admin/dashboard', to: 'pages#dashboard'
   get 'pages', to: 'pages#index'
   get 'persons', to: 'persons#index'
   get 'persons/status', to: 'persons#by_status'
