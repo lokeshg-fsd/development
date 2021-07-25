@@ -34,10 +34,8 @@ commands:
           paths:
             - vendor/bundle
 
-      # Wait for DB
-      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
-
       # Setup the database
+      - run: bundle exec rake db:create
       - run: bundle exec rake db:setup
 
       # Run the tests
