@@ -17,7 +17,7 @@ commands:
   shared_steps:
     steps:
       - checkout
-      - run: sudo apt install -y mysql-client
+      # - run: sudo apt install -y mysql-client
       # Restore Cached Dependencies
       - restore_cache:
           name: Restore bundle cache
@@ -65,7 +65,7 @@ jobs:
           RAILS_ENV: test
       - image: mysql:5.7
         environment:
-          MYSQL_USER: root
+          # MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: root
 
   js-linters:
