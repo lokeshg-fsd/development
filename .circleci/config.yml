@@ -3,12 +3,22 @@ name: CI
 on: 
   push:
     branches:    
-      - main 
+      - master 
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
-    steps:    
+    
+    strategy:
+      matrix:
+        node-version: [10.x, 8.x]
+    
+    steps:
+    - name: Use Node.js ${{ matrix.node-version }}
+      with:
+        node-version: ${{ matrix.node-version }}
+    
     - name: yarn install
       run: |
         yarn install
@@ -21,8 +31,3 @@ jobs:
     - name: yarn build
       run: |
         yarn run build --if-present
-    - name: Check for RuboCop
-      run: rubocop
-    - name: JS Linters
-      run: |
-          yarn run prettier || yarn run eslintx:all
