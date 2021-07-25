@@ -1,13 +1,14 @@
-Person.delete_all
+# Person.delete_all
 
-10.times do
-  Person.create({
+1000.times do |i|
+  Person.create!({
                   lastName: Faker::Name.last_name,
-                  firstName: Faker::Name.first_name,
+                  firstName: Faker::Name.first_name ,
                   status: Faker::Boolean.boolean,
                   address: Faker::Address.full_address,
-                  userType: Faker::Name.name,
-                  email: Faker::Name.name,
-                  blood_id: Random.rand(1...9)
+                  userType: Faker::Job.position,
+                  email: Faker::Internet.email,
+                  blood_id: Random.rand(1...9),
+                  branch_id: Random.rand(3...4)
                 })
 end
