@@ -75,7 +75,7 @@ jobs:
           when: 'always'
           command: yarn eslint:all
     docker:
-      - image: circleci/ruby:2.5.0-node-browsers
+      - image: cimg/node:16.5.0
         environment:
           PGHOST: localhost
           PGUSER: administrate
