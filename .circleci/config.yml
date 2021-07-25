@@ -13,8 +13,13 @@ commands:
 
       # Bundle install dependencies
       - run: gem install bundler
+      - run: yarn install
       - run: bundle install --path vendor/bundle
-
+      - run:
+          name: 'Run prettier'
+          when: 'always'
+          command: yarn prettier:all
+      
       # Cache Dependencies
       - save_cache:
           name: Store bundle cache
@@ -26,7 +31,7 @@ commands:
       - run: dockerize -wait tcp://localhost:5432 -timeout 1m
 
       # Setup the environment
-      - run: cp .sample.env .env
+      - run: RAILS_ENV 'test'
 
       # Setup the database
       - run: bundle exec rake db:setup
@@ -56,6 +61,21 @@ jobs:
           POSTGRES_USER: administrate
           POSTGRES_DB: ruby25
           POSTGRES_PASSWORD: ""
+          
+  js-linters:
+    working_directory: ~/app
+    steps:
+      - run: yarn install
+      - run:
+            name: 'Run prettier'
+            when: 'always'
+            command: yarn prettier:all
+        - run:
+            name: 'Run Eslint'
+            when: 'always'
+            command: yarn eslint:all
+
+
 
   ruby-26:
     <<: *default_job
@@ -75,5 +95,6 @@ workflows:
   version: 2
   multiple-rubies:
     jobs:
+      - js-linters
       - ruby-26
       - ruby-25
