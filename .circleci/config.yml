@@ -1,540 +1,78 @@
+
 version: 2.1
-jobs:
-  build:
-    resource_class: 'large'
-    machine:
-      image: 'ubuntu-2004:202007-01'
-    environment:
-      COMPOSE_DOCKER_CLI_BUILD: 'enabled'
-      DOCKER_BUILDKIT: 1
-      DOCKER_CLI_EXPERIMENTAL: 'enabled'
-    working_directory: '~/app'
+
+commands:
+  shared_steps:
     steps:
-      - run:
-          name: 'Enable docker buildx'
-          command: |
-            echo $'{\n    "experimental": true\n}' | sudo tee /etc/docker/daemon.json;
-            sudo service docker restart
-            docker buildx create --driver docker-container --name containerdriver --use
-      - run:
-          name: 'Docker login'
-          command: |
-            echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin
-      - run:
-          name: 'GCloud setup'
-          command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-            gcloud auth configure-docker -q
       - checkout
+
+      # Restore Cached Dependencies
       - restore_cache:
-          keys:
-            - v20210331-huddle-{{ checksum "Gemfile.lock" }}-{{ checksum "yarn.lock" }}
-            - v20210331-huddle-{{ checksum "Gemfile.lock" }}-
-            - v20210331-huddle-
-      - run:
-          name: 'Build Docker image'
-          no_output_timeout: '40m'
-          command: |
-            HUDDLE_BUILD_TAG="$CIRCLE_BUILD_NUM-$CIRCLE_SHA1"
-            echo "HUDDLE_BUILD_TAG=$HUDDLE_BUILD_TAG" > .env
-            echo "$HUDDLE_BUILD_TAG" > tag.txt
+          name: Restore bundle cache
+          key: administrate-{{ checksum "Gemfile.lock" }}
 
-            PRODUCTION_ENV_REGEX="^(develop|release//[0-9]+\.[0-9]+\.[0-9]+|hotfix//[0-9]+\.[0-9]+\.[0-9]+|main)"
-            RAILS_ENV="test"
-            if [[ "$CIRCLE_BRANCH" =~ $PRODUCTION_ENV_REGEX ]]; then
-              RAILS_ENV="production"
-            fi
-            echo "RAILS_ENV: $RAILS_ENV"
+      # Bundle install dependencies
+      - run: bundle install --path vendor/bundle
 
-            CACHE_IMAGE_TAG=$({ \
-                (find config/webpack -type f -exec md5sum {} \; | sort -k 2) & \
-                (md5sum yarn.lock babel.config.js) \
-              } | md5sum | awk '{print $1}' \
-            )-$RAILS_ENV
-
-            BUILD_CACHE_TAG=$CACHE_IMAGE_TAG
-            if ! $(docker manifest inspect officespacesoftware/huddle-build_cache:$BUILD_CACHE_TAG >/dev/null 2>&1); then
-              BUILD_CACHE_TAG="dummy"
-            fi
-            echo "BUILD_CACHE_TAG: $BUILD_CACHE_TAG"
-
-            CACHE_OPTIONS="--cache-to=type=local,dest=/home/circleci/docker-cache-new,mode=max"
-            if [ -f /home/circleci/docker-cache/index.json ]; then
-              CACHE_OPTIONS+=" --cache-from=type=local,src=/home/circleci/docker-cache"
-            fi
-            echo "cache options: $CACHE_OPTIONS"
-
-            docker buildx build \
-              --tag "huddle/app:$HUDDLE_BUILD_TAG" \
-              --target builder \
-              --progress=plain \
-              --build-arg RAILS_ENV="$RAILS_ENV" \
-              --build-arg NODE_ENV="production" \
-              --build-arg BUILD_CACHE_TAG="$BUILD_CACHE_TAG" \
-              --build-arg CI="true" \
-              $CACHE_OPTIONS \
-              --output type=docker,dest=/home/circleci/image.tar .
-
-            rm -rf /home/circleci/docker-cache
-            mv /home/circleci/docker-cache-new /home/circleci/docker-cache
-
-            if [[ "$BUILD_CACHE_TAG" = "dummy" ]]; then
-              docker buildx build \
-                --tag "officespacesoftware/huddle-build_cache:$CACHE_IMAGE_TAG" \
-                --target builder_cache \
-                --progress=plain \
-                --build-arg RAILS_ENV="$RAILS_ENV" \
-                --build-arg NODE_ENV="production" \
-                --build-arg BUILD_CACHE_TAG="$BUILD_CACHE_TAG" \
-                --build-arg CI="true" \
-                --cache-from=type=local,src=/home/circleci/docker-cache \
-                --push .
-            fi
+      # Cache Dependencies
       - save_cache:
-          key: v20210331-huddle-{{ checksum "Gemfile.lock" }}-{{ checksum "yarn.lock" }}
+          name: Store bundle cache
+          key: administrate-{{ checksum "Gemfile.lock" }}
           paths:
-            - '/home/circleci/docker-cache'
-      - run:
-          name: 'Find ruby test files for parallelization'
-          command: |
-            circleci tests glob "spec/**/*_spec.rb" > all_test_files.txt
-            circleci tests glob "spec/system/**/*_spec.rb" > system_test_files.txt
-            grep -Fxvf system_test_files.txt all_test_files.txt > ruby_test_files.txt
-      - run:
-          name: 'Find ts test files for parallelization'
-          command: |
-            circleci tests glob "app/javascript/**/__tests__/**/*.{ts,tsx}" > all_ts_files.txt
-            circleci tests glob "app/javascript/**/__tests__/**/{fixtures,support}/**/*.{ts,tsx}" > ts_files_to_exclude.txt
-            grep -Fxvf ts_files_to_exclude.txt all_ts_files.txt > ts_test_files.txt
-      - run:
-          name: 'Find changed ruby/ts/config files'
-          command: |
-            RELEASE_OR_HOTFIX_BRANCH_REGEX="^(release//[0-9]+\.[0-9]+\.[0-9]+|hotfix//[0-9]+\.[0-9]+\.[0-9]+)"
-            GIT_BRANCH="origin/develop"
-            if [[ "$CIRCLE_BRANCH" =~ $RELEASE_OR_HOTFIX_BRANCH_REGEX ]]; then
-              GIT_BRANCH="origin/main"
-            fi
-            echo "Comparing changed files against $GIT_BRANCH"
+            - vendor/bundle
 
-            git diff --diff-filter=d --name-only $(git merge-base $GIT_BRANCH HEAD) HEAD \
-              -- '*.rb' '*.rake' > ruby_files_to_check.txt
-            echo "Changed ruby files:"
-            cat ruby_files_to_check.txt
+      # Wait for DB
+      - run: dockerize -wait tcp://localhost:5432 -timeout 1m
 
-            git diff --diff-filter=d --name-only $(git merge-base $GIT_BRANCH HEAD) HEAD \
-              -- '*.tsx' '*.ts' '*.graphql' | tr '\n' ' ' > ts_files_to_check.txt
-            echo "Changed ts files:"
-            cat ts_files_to_check.txt
+      # Setup the environment
+      - run: cp .sample.env .env
 
-            git diff --diff-filter=d --name-only $(git merge-base $GIT_BRANCH HEAD) HEAD \
-              -- '.*' 'config/*' '*.lock' 'Gemfile' 'package.json' 'tsconfig.json' ':(exclude).*/*' \
-              > changed_configuration_files.txt
-            echo "Changed configuration files:"
-            cat changed_configuration_files.txt
-      - persist_to_workspace:
-          root: '/home/circleci/'
-          paths:
-            - './image.tar'
-      - persist_to_workspace:
-          root: '.'
-          paths:
-            - './.env'
-            - './huddle.env'
-            - './tag.txt'
-            - './docker-compose.yml'
-            - './.circleci/docker-compose.yml'
-            - './system_test_files.txt'
-            - './ruby_test_files.txt'
-            - './ruby_files_to_check.txt'
-            - './ts_files_to_check.txt'
-            - './ts_test_files.txt'
-            - './changed_configuration_files.txt'
-  ruby-linters:
-    resource_class: 'small'
+      # Setup the database
+      - run: bundle exec rake db:setup
+
+      # Run the tests
+      - run: bundle exec rake
+
+default_job: &default_job
+  working_directory: ~/app
+  steps:
+    - shared_steps
+    # Run the tests against multiple versions of Rails
+    - run: bundle exec appraisal install
+    - run: bundle exec appraisal rake
+
+jobs:
+  ruby-25:
+    <<: *default_job
     docker:
-      - image: 'docker/compose:alpine-1.25.4'
-        auth:
-          username: '$DOCKER_HUB_USERNAME'
-          password: '$DOCKER_HUB_PASSWORD'
-    environment:
-      COMPOSE_FILES: '-f docker-compose.yml -f .circleci/docker-compose.yml'
-    working_directory: '/tmp/workspace'
-    steps:
-      - attach_workspace:
-          at: '/tmp/workspace'
-      - setup_remote_docker
-      - run:
-          name: 'Load archived Docker image'
-          command: |
-            docker load -i image.tar
-      - run:
-          name: 'Run rubocop'
-          command: |
-            FILES_TO_CHECK=$(cat ruby_files_to_check.txt)
-            if [ -s changed_configuration_files.txt ]; then
-              echo "Full rubocop check"
-              docker-compose $(echo $COMPOSE_FILES) run --no-deps app bin/rubocop --parallel
-            elif [ -n "$FILES_TO_CHECK" ]; then
-              echo "Partial rubocop check"
-              docker-compose $(echo $COMPOSE_FILES) run --no-deps app bin/rubocop --parallel --force-exclusion $FILES_TO_CHECK
-            fi
-      - run:
-          name: 'Run brakeman'
-          when: 'always'
-          command: |
-            docker-compose $(echo $COMPOSE_FILES) run --no-deps app bundle exec brakeman --no-pager
-      - run:
-          name: 'Run bundle audit'
-          when: 'always'
-          command: |
-            IGNORE_LIST="CVE-2015-9284 CVE-2016-7103"
-            AUDIT_COMMAND="bundle exec bundle-audit update && bundle exec bundle-audit --ignore $IGNORE_LIST"
-            docker-compose $(echo $COMPOSE_FILES) run --no-deps app /bin/bash -c "$AUDIT_COMMAND"
-      - run:
-          name: 'Run license finder'
-          when: 'always'
-          command: |
-            docker-compose $(echo $COMPOSE_FILES) run --no-deps app bundle exec license_finder
-  js-linters:
-    resource_class: 'small'
+      - image: circleci/ruby:2.5.0-node-browsers
+        environment:
+          PGHOST: localhost
+          PGUSER: administrate
+          RAILS_ENV: test
+      - image: postgres:10.1-alpine
+        environment:
+          POSTGRES_USER: administrate
+          POSTGRES_DB: ruby25
+          POSTGRES_PASSWORD: ""
+
+  ruby-26:
+    <<: *default_job
     docker:
-      - image: 'docker/compose:alpine-1.25.4'
-        auth:
-          username: '$DOCKER_HUB_USERNAME'
-          password: '$DOCKER_HUB_PASSWORD'
-    environment:
-      COMPOSE_FILES: '-f docker-compose.yml -f .circleci/docker-compose.yml'
-    working_directory: '/tmp/workspace'
-    steps:
-      - attach_workspace:
-          at: '/tmp/workspace'
-      - setup_remote_docker
-      - run:
-          name: 'Load archived Docker image'
-          command: |
-            FILES_TO_CHECK=$(cat ts_files_to_check.txt)
-            if [ -n "$FILES_TO_CHECK" ] || [ -s changed_configuration_files.txt ]; then
-              docker load -i image.tar
-            fi
-      - run:
-          name: 'Run prettier'
-          when: 'always'
-          command: |
-            FILES_TO_CHECK=$(cat ts_files_to_check.txt)
-            if [ -s changed_configuration_files.txt ]; then
-              echo "Full prettier check"
-              docker-compose $(echo $COMPOSE_FILES) run --no-deps app yarn prettier:all
-            elif [ -n "$FILES_TO_CHECK" ]; then
-              echo "Partial prettier check"
-              docker-compose $(echo $COMPOSE_FILES) run --no-deps app yarn prettier -c $FILES_TO_CHECK
-            fi
-      - run:
-          name: 'Run typescript'
-          when: 'always'
-          command: |
-            FILES_TO_CHECK=$(cat ts_files_to_check.txt)
-            if [[ -n "$FILES_TO_CHECK" ]] || [[ -s changed_configuration_files.txt ]]; then
-             docker-compose $(echo $COMPOSE_FILES) run --no-deps app yarn tsc:ci
-            fi
-      - run:
-          name: 'Run eslint'
-          no_output_timeout: '20m'
-          command: |
-            FILES_TO_CHECK=$(cat ts_files_to_check.txt)
-            if [[ -n "$FILES_TO_CHECK" ]] &&
-              docker-compose $(echo $COMPOSE_FILES) run --no-deps app grep -qE '\/\* eslint [^:]+:' $FILES_TO_CHECK /dev/null
-            then
-              echo
-              echo "Use of '/ eslint rule-name: 0 /' style comments to disable a rule is not allowed because"
-              echo "they are not found by --report-unused-disable-directives."
-              echo "Prefer '// eslint-disable-next-line rule-name' where possible."
-              echo "'/ eslint-disable rule-name /' is okay if the rule is broken in more than 3 places in the file."
-              exit 1
-            elif [ -s changed_configuration_files.txt ]; then
-              echo "Full eslint check"
-              docker-compose $(echo $COMPOSE_FILES) run app bin/rails db:create db:test:prepare
-              docker-compose $(echo $COMPOSE_FILES) run app yarn eslint:all
-            elif [ -n "$FILES_TO_CHECK" ]; then
-              echo "Partial eslint check"
-              docker-compose $(echo $COMPOSE_FILES) run app bin/rails db:create db:test:prepare
-              docker-compose $(echo $COMPOSE_FILES) run app /bin/bash -c "bin/rake graphql:schema:generate && yarn eslint --report-unused-disable-directives $FILES_TO_CHECK"
-            fi
-  ruby-tests:
-    resource_class: 'small'
-    parallelism: 8
-    docker:
-      - image: 'docker/compose:alpine-1.25.4'
-        auth:
-          username: '$DOCKER_HUB_USERNAME'
-          password: '$DOCKER_HUB_PASSWORD'
-    environment:
-      COMPOSE_FILES: '-f docker-compose.yml -f .circleci/docker-compose.yml'
-    working_directory: '/tmp/workspace'
-    steps:
-      - attach_workspace:
-          at: '/tmp/workspace'
-      - setup_remote_docker
-      - run:
-          name: 'Load archived Docker image'
-          command: |
-            docker load -i image.tar
-      - run:
-          name: 'Prepare database'
-          command: |
-            docker-compose $(echo $COMPOSE_FILES) run app bin/rails db:create db:test:prepare
-      - run:
-          name: 'Run tests'
-          command: |
-            TESTFILES=$(cat ruby_test_files.txt | circleci tests split --split-by=timings --timings-type=filename)
-            echo "TESTFILES:"
-            echo "${TESTFILES}"
-            docker-compose $(echo $COMPOSE_FILES) run --name app_container app \
-                                                   bundle exec rspec \
-                                                   --profile 10 \
-                                                   --format RspecJunitFormatter \
-                                                   --out tmp/reports/rspec.xml \
-                                                   --format documentation \
-                                                   ${TESTFILES}
-      - run:
-          name: 'Copy test artifacts'
-          when: 'always'
-          command: |
-            docker cp app_container:/app/tmp/reports reports
-            docker cp app_container:/app/log log
-            docker cp app_container:/app/tmp/floorplans floorplans || true
-            docker cp app_container:/app/tmp/screenshots screenshots || true
-      - store_test_results:
-          path: 'reports'
-      - store_artifacts:
-          path: 'floorplans'
-      - store_artifacts:
-          path: 'log'
-      - store_artifacts:
-          path: 'screenshots'
-  system-tests:
-    resource_class: 'large'
-    machine:
-      image: 'ubuntu-2004:202007-01'
-    parallelism: 8
-    environment:
-      COMPOSE_FILES: '-f docker-compose.yml -f .circleci/docker-compose.yml'
-    working_directory: '/tmp/workspace'
-    steps:
-      - attach_workspace:
-          at: '/tmp/workspace'
-      - run:
-          name: 'Load archived Docker image'
-          command: |
-            docker load -i image.tar
-      - run:
-          name: 'Prepare database'
-          command: |
-            docker-compose $(echo $COMPOSE_FILES) run app bin/rails db:create db:test:prepare
-      - run:
-          name: 'Memory usage check'
-          command: |
-            while true; do
-              sleep 5
-              ps auxwwf
-              echo "======"
-            done
-          background: true
-      - run:
-          name: 'Run tests'
-          command: |
-            TESTFILES=$(cat system_test_files.txt | circleci tests split --split-by=timings --timings-type=filename)
-            echo "TESTFILES:"
-            echo "${TESTFILES}"
-            docker-compose $(echo $COMPOSE_FILES) run --name app_container app \
-                                                   bundle exec rspec \
-                                                   --profile 10 \
-                                                   --format RspecJunitFormatter \
-                                                   --out tmp/reports/rspec.xml \
-                                                   --format documentation \
-                                                   ${TESTFILES}
-      - run:
-          name: 'Max memory usage in bytes'
-          when: 'always'
-          command: |
-            cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
-      - run:
-          name: 'Copy test artifacts'
-          when: 'always'
-          command: |
-            docker cp app_container:/app/tmp/reports reports
-            docker cp app_container:/app/log log
-            docker cp app_container:/app/tmp/floorplans floorplans || true
-            docker cp app_container:/app/tmp/screenshots screenshots || true
-      - store_test_results:
-          path: 'reports'
-      - store_artifacts:
-          path: 'floorplans'
-      - store_artifacts:
-          path: 'screenshots'
-      - store_artifacts:
-          path: 'log'
-  js-tests:
-    resource_class: 'medium'
-    docker:
-      - image: 'docker/compose:alpine-1.25.4'
-        auth:
-          username: '$DOCKER_HUB_USERNAME'
-          password: '$DOCKER_HUB_PASSWORD'
-    parallelism: 2
-    environment:
-      COMPOSE_FILES: '-f docker-compose.yml -f .circleci/docker-compose.yml'
-    working_directory: '/tmp/workspace'
-    steps:
-      - attach_workspace:
-          at: '/tmp/workspace'
-      - setup_remote_docker
-      - run:
-          name: 'Load archived Docker image'
-          command: |
-            docker load -i image.tar
-      - run:
-          name: 'Run jest tests'
-          command: |
-            TESTFILES=$(cat ts_test_files.txt | circleci tests split --split-by=timings --timings-type=filename)
-            echo "TESTFILES:"
-            echo "${TESTFILES}"
-            docker-compose $(echo $COMPOSE_FILES) run app bin/rails db:create db:test:prepare
-            docker-compose $(echo $COMPOSE_FILES) run --name app_container app \
-                                                   yarn test:jest:ci ${TESTFILES}
-      - run:
-          name: 'Copy test artifacts'
-          when: 'always'
-          command: |
-            docker cp app_container:/app/tmp/reports reports
-      - store_test_results:
-          path: 'reports'
-  deploy:
-    resource_class: 'medium'
-    machine:
-      image: 'ubuntu-2004:202007-01'
-    environment:
-      COMPOSE_FILES: '-f docker-compose.yml -f .circleci/docker-compose.yml'
-    working_directory: '/tmp/workspace'
-    steps:
-      - attach_workspace:
-          at: '/tmp/workspace'
-      - run:
-          name: 'Load archived Docker image'
-          command: |
-            docker load -i image.tar
-      - add_ssh_keys:
-          fingerprints:
-            - '9c:b2:e4:a4:07:33:d0:d5:4b:fa:23:e1:e4:03:a4:2b'
-      - run:
-          name: 'Set HOSTS environment variable'
-          command: |
-            case $CIRCLE_BRANCH in
-              main)
-                HOSTS="(
-                  main.ossd.co
-                )"
-                ;;
-              release/*)
-                HOSTS="(
-                  release.ossd.co
-                  sprintdemo.ossd.co
-                  release365.ossd.co
-                )"
-                ;;
-              hotfix/*)
-                HOSTS="(
-                  hotfix.ossd.co
-                )"
-                ;;
-              *)
-                HOSTS="(
-                  develop.ossd.co
-                  develop365.ossd.co
-                  utah.ossd.co
-                  omaha.ossd.co
-                  juno.ossd.co
-                )"
-                ;;
-            esac
-            echo "export HOSTS=$HOSTS" >> $BASH_ENV
-      - run:
-          name: 'Prepare ssh keys for container'
-          command: |
-            for HOST in "${HOSTS[@]}"; do
-              echo "export HOST='${HOST}'" >> $BASH_ENV
-              ssh-keyscan -t rsa -H $HOST >> ~/.ssh/known_hosts
-            done
-            cp -R ~/.ssh .ssh
-            sed -i 's/\/home\/circleci/\~/g' .ssh/config
-            echo "  ForwardAgent yes" >> .ssh/config
-            sudo chown -R root:root .ssh/
-      - run:
-          name: 'Deploy to staging servers'
-          command: |
-            for HOST in "${HOSTS[@]}"; do
-              echo "export HOST='${HOST}'" >> $BASH_ENV
-              docker-compose $(echo $COMPOSE_FILES) run \
-                --no-deps \
-                -e HOST=$HOST \
-                -e BRANCH=$CIRCLE_BRANCH \
-                -e no_compile=1 \
-                app bin/mina full_deploy
-            done
-      - slack/status:
-          fail_only: true
-          failure_message:
-            "':red_circle: Ouch! A deployment to $HOST has failed! $CIRCLE_USERNAME,
-            please take a look.'\n"
-orbs:
-  slack: 'circleci/slack@3.4.2'
+      - image: circleci/ruby:2.6.3-node-browsers-legacy
+        environment:
+          PGHOST: localhost
+          PGUSER: administrate
+          RAILS_ENV: test
+      - image: postgres:10.1-alpine
+        environment:
+          POSTGRES_USER: administrate
+          POSTGRES_DB: ruby26
+          POSTGRES_PASSWORD: ""
+
 workflows:
   version: 2
-  build-lint-test-deploy:
+  multiple-rubies:
     jobs:
-      - build:
-          filters:
-            tags:
-              ignore: '/.*/'
-      - ruby-linters:
-          requires:
-            - 'build'
-          filters:
-            branches:
-              ignore:
-                - 'develop'
-                - 'main'
-                - '/^release\\/\\d+\\.\\d+\\.\\d+/'
-                - '/^hotfix\\/\\d+\\.\\d+\\.\\d+/'
-      - js-linters:
-          requires:
-            - 'build'
-          filters:
-            branches:
-              ignore:
-                - 'develop'
-                - 'main'
-                - '/^release\\/\\d+\\.\\d+\\.\\d+/'
-                - '/^hotfix\\/\\d+\\.\\d+\\.\\d+/'
-      - ruby-tests:
-          requires:
-            - 'build'
-      - system-tests:
-          requires:
-            - 'build'
-      - js-tests:
-          requires:
-            - 'build'
-      - deploy:
-          requires:
-            - 'build'
-            - 'ruby-tests'
-            - 'system-tests'
-            - 'js-tests'
-          filters:
-            branches:
-              only:
-                - 'develop'
-                - 'main'
-                - '/^release\\/\\d+\\.\\d+\\.\\d+/'
-                - '/^hotfix\\/\\d+\\.\\d+\\.\\d+/'
+      - ruby-26
+      - ruby-25
