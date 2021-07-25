@@ -67,7 +67,7 @@ jobs:
   ruby-25:
     <<: *default_job
     docker:
-      - image: cimg/ruby:2.7.1-node-browsers
+      - image: cimg/ruby:2.7.1-node
         environment:
           PGHOST: localhost
           PGUSER: administrate
@@ -91,7 +91,7 @@ jobs:
           when: 'always'
           command: npm eslint:all
     docker:
-      - image: cimg/ruby:2.7.1-node-browsers
+      - image: cimg/ruby:2.7.1-node
         environment:
           PGHOST: localhost
           PGUSER: administrate
@@ -107,7 +107,7 @@ jobs:
   ruby-26:
     <<: *default_job
     docker:
-      - image: cimg/ruby:2.7.1-node-browsers
+      - image: cimg/ruby:2.7.1-node
         environment:
           PGHOST: localhost
           PGUSER: administrate
