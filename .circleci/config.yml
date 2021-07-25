@@ -65,15 +65,26 @@ jobs:
   js-linters:
     working_directory: ~/app
     steps:
-      - run: yarn install
+      - shared_steps
       - run:
-            name: 'Run prettier'
-            when: 'always'
-            command: yarn prettier:all
-        - run:
-            name: 'Run Eslint'
-            when: 'always'
-            command: yarn eslint:all
+          name: 'Run prettier'
+          when: 'always'
+          command: yarn prettier:all
+      - run:
+          name: 'Run Eslint'
+          when: 'always'
+          command: yarn eslint:all
+    docker:
+      - image: circleci/ruby:2.5.0-node-browsers
+        environment:
+          PGHOST: localhost
+          PGUSER: administrate
+          RAILS_ENV: test
+      - image: postgres:10.1-alpine
+        environment:
+          POSTGRES_USER: administrate
+          POSTGRES_DB: ruby25
+          POSTGRES_PASSWORD: ""
 
 
 
