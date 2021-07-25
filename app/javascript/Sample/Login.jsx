@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-newline */
 /* eslint-disable no-nested-ternary */
 // @flow
 import React, { useCallback, useReducer } from 'react'
@@ -117,7 +118,8 @@ const Login = () => {
             <Button
               color="inherit"
               onClick={() =>
-                dispatch({ type: 'login', payload: { value: false } })}
+                dispatch({ type: 'login', payload: { value: false } })
+              }
             >
               Logout <LockOutlined />
             </Button>
@@ -133,7 +135,8 @@ const Login = () => {
           <ViewData
             editHandler={editHandler}
             logout={() =>
-              dispatch({ type: 'login', payload: { value: false } })}
+              dispatch({ type: 'login', payload: { value: false } })
+            }
             return={() => dispatch({ type: 'view', payload: { value: false } })}
             styles={classes}
           />
@@ -143,22 +146,26 @@ const Login = () => {
             edit={state.edit}
             email={state.email}
             logout={() =>
-              dispatch({ type: 'login', payload: { value: false } })}
+              dispatch({ type: 'login', payload: { value: false } })
+            }
             name={state.name}
             password={state.password}
             phone={state.phone}
             styles={classes}
             username={state.username}
             viewData={() =>
-              dispatch({ type: 'view', payload: { value: true } })}
+              dispatch({ type: 'view', payload: { value: true } })
+            }
           />
         ) : (
           <Register
             logout={() =>
-              dispatch({ type: 'login', payload: { value: false } })}
+              dispatch({ type: 'login', payload: { value: false } })
+            }
             styles={classes}
             viewData={() =>
-              dispatch({ type: 'view', payload: { value: true } })}
+              dispatch({ type: 'view', payload: { value: true } })
+            }
           />
         )
       ) : (
@@ -174,7 +181,8 @@ const Login = () => {
                 dispatch({
                   type: 'user',
                   payload: { value: event.target.value },
-                })}
+                })
+              }
               size="small"
               style={{ margin: '10px' }}
               value={state.username}
@@ -190,7 +198,8 @@ const Login = () => {
                 dispatch({
                   type: 'password',
                   payload: { value: event.target.value },
-                })}
+                })
+              }
               size="small"
               style={{ margin: '10px' }}
               type="password"

@@ -17,7 +17,7 @@ commands:
   shared_steps:
     steps:
       - checkout
-
+      - run: sudo apt install -y libsqlite3-dev zlib1g-dev
       # Restore Cached Dependencies
       - restore_cache:
           name: Restore bundle cache
@@ -63,11 +63,10 @@ jobs:
           PGHOST: localhost
           PGUSER: administrate
           RAILS_ENV: test
-      - image: postgres:10.1-alpine
+      - image: mysql:5.7
         environment:
-          POSTGRES_USER: administrate
-          POSTGRES_DB: ruby25
-          POSTGRES_PASSWORD: ''
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
 
   js-linters:
     working_directory: ~/app
