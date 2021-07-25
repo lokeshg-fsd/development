@@ -1,4 +1,5 @@
-/*eslint-disable*/
+// @flow
+
 import React from 'react'
 // react plugin for creating charts
 import ChartistGraph from 'react-chartist'
@@ -18,43 +19,47 @@ import BugReport from '@material-ui/icons/BugReport'
 import Code from '@material-ui/icons/Code'
 import Cloud from '@material-ui/icons/Cloud'
 // core components
-import Button from 'components/CustomButtons/Button.js'
-import GridItem from 'components/Grid/GridItem.js'
-import GridContainer from 'components/Grid/GridContainer.js'
-import Table from 'components/Table/Table.js'
-import Tasks from 'components/Tasks/Tasks.js'
-import CustomTabs from 'components/CustomTabs/CustomTabs.js'
-import Danger from 'components/Typography/Danger.js'
-import Card from 'components/Card/Card.js'
-import CardHeader from 'components/Card/CardHeader.js'
-import CardAvatar from 'components/Card/CardAvatar.js'
-import CardIcon from 'components/Card/CardIcon.js'
-import CardBody from 'components/Card/CardBody.js'
-import CardFooter from 'components/Card/CardFooter.js'
-import SnackbarContent from 'components/Snackbar/SnackbarContent.js'
+import Button from 'components/CustomButtons/Button'
+import GridItem from 'components/Grid/GridItem'
+import GridContainer from 'components/Grid/GridContainer'
+import Table from 'components/Table/Table'
+import Tasks from 'components/Tasks/Tasks'
+import CustomTabs from 'components/CustomTabs/CustomTabs'
+import Danger from 'components/Typography/Danger'
+import Card from 'components/Card/Card'
+import CardHeader from 'components/Card/CardHeader'
+import CardAvatar from 'components/Card/CardAvatar'
+import CardIcon from 'components/Card/CardIcon'
+import CardBody from 'components/Card/CardBody'
+import CardFooter from 'components/Card/CardFooter'
+import SnackbarContent from 'components/Snackbar/SnackbarContent'
 
 import {
   dailySalesChart,
   emailsSubscriptionChart,
   completedTasksChart,
-} from 'variables/charts.js'
+} from 'variables/charts'
 
-import styles from 'assets/jss/material-dashboard-react/views/rtlStyle.js'
+import styles from 'assets/jss/material-dashboard-react/views/rtlStyle'
 
 import avatar from 'assets/img/faces/marc.jpg'
 
-let bugs = [
+const bugs = [
   'طراح گرافیک از این متن به عنوان عنصری از ترکیب بندی برای پر کردن؟',
+  // eslint-disable-next-line no-tabs
   '	نخست از متن‌های آزمایشی و بی‌معنی استفاده می‌کنند تا صرفا به مشتری یا صاحب کار خود نشان دهند؟',
   'همان حال کار آنها به نوعی وابسته به متن می‌باشد',
+  // eslint-disable-next-line no-tabs
   '	آنها با استفاده از محتویات ساختگی، صفحه گرافیکی خود را صفحه‌آرایی می‌کنند',
 ]
-let website = [
+const website = [
   'بعد از اینکه متن در آن قرار گیرد چگونه به نظر می‌رسد و قلم‌ها و اندازه‌بندی‌ها چگونه در نظر گرفته',
   'اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید؟',
 ]
-let server = [
+const server = [
+  // eslint-disable-next-line max-len
   'گرافیکی نشانگر چگونگی نوع و اندازه فونت و ظاهر متن باشد. معمولا طراحان گرافیک برای صفحه‌آرایی، نخست از متن‌های آزمایشی؟',
+  // eslint-disable-next-line max-len
   'از این متن به عنوان عنصری از ترکیب بندی برای پر کردن صفحه و ارایه اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید، تا از نظر گرافیکی نشانگر چگونگی نوع و اندازه فونت و ظاهر متن باشد. معمولا طراحان گرافیک برای صفحه‌آرایی، نخست از متن‌های آزمایشی ؟',
   'از متن‌های آزمایشی و بی‌معنی استفاده می‌کنند تا صرفا به مشتری یا صاحب کار خود نشان دهند؟',
 ]
@@ -63,12 +68,13 @@ const useStyles = makeStyles(styles)
 
 export default function RTLPage() {
   const classes = useStyles()
+
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem md={3} sm={6} xs={12}>
           <Card>
-            <CardHeader color="warning" stats icon>
+            <CardHeader color="warning" icon stats>
               <CardIcon color="warning">
                 <Icon>content_copy</Icon>
               </CardIcon>
@@ -82,16 +88,16 @@ export default function RTLPage() {
                 <Danger>
                   <Warning />
                 </Danger>
-                <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                <a href="#pablo" onClick={(event) => event.preventDefault()}>
                   فضای بیشتری داشته باشید...
                 </a>
               </div>
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem md={3} sm={6} xs={12}>
           <Card>
-            <CardHeader color="success" stats icon>
+            <CardHeader color="success" icon stats>
               <CardIcon color="success">
                 <Store />
               </CardIcon>
@@ -106,9 +112,9 @@ export default function RTLPage() {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem md={3} sm={6} xs={12}>
           <Card>
-            <CardHeader color="danger" stats icon>
+            <CardHeader color="danger" icon stats>
               <CardIcon color="danger">
                 <Icon>info_outline</Icon>
               </CardIcon>
@@ -123,9 +129,9 @@ export default function RTLPage() {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem md={3} sm={6} xs={12}>
           <Card>
-            <CardHeader color="info" stats icon>
+            <CardHeader color="info" icon stats>
               <CardIcon color="info">
                 <Accessibility />
               </CardIcon>
@@ -142,15 +148,15 @@ export default function RTLPage() {
         </GridItem>
       </GridContainer>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem md={4} sm={12} xs={12}>
           <Card chart>
             <CardHeader color="success">
               <ChartistGraph
                 className="ct-chart"
                 data={dailySalesChart.data}
-                type="Line"
-                options={dailySalesChart.options}
                 listener={dailySalesChart.animation}
+                options={dailySalesChart.options}
+                type="Line"
               />
             </CardHeader>
             <CardBody>
@@ -169,16 +175,16 @@ export default function RTLPage() {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem md={4} sm={12} xs={12}>
           <Card chart>
             <CardHeader color="warning">
               <ChartistGraph
                 className="ct-chart"
                 data={emailsSubscriptionChart.data}
-                type="Bar"
+                listener={emailsSubscriptionChart.animation}
                 options={emailsSubscriptionChart.options}
                 responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                listener={emailsSubscriptionChart.animation}
+                type="Bar"
               />
             </CardHeader>
             <CardBody>
@@ -192,15 +198,15 @@ export default function RTLPage() {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem md={4} sm={12} xs={12}>
           <Card chart>
             <CardHeader color="danger">
               <ChartistGraph
                 className="ct-chart"
                 data={completedTasksChart.data}
-                type="Line"
-                options={completedTasksChart.options}
                 listener={completedTasksChart.animation}
+                options={completedTasksChart.options}
+                type="Line"
               />
             </CardHeader>
             <CardBody>
@@ -216,9 +222,8 @@ export default function RTLPage() {
         </GridItem>
       </GridContainer>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem md={6} sm={12} xs={12}>
           <CustomTabs
-            title="وظایف:"
             headerColor="primary"
             rtlActive
             tabs={[
@@ -227,10 +232,12 @@ export default function RTLPage() {
                 tabIcon: BugReport,
                 tabContent: (
                   <Tasks
+                    // eslint-disable-next-line no-magic-numbers
                     checkedIndexes={[0, 3]}
-                    tasksIndexes={[0, 1, 2, 3]}
-                    tasks={bugs}
                     rtlActive
+                    tasks={bugs}
+                    // eslint-disable-next-line no-magic-numbers
+                    tasksIndexes={[0, 1, 2, 3]}
                   />
                 ),
               },
@@ -240,9 +247,9 @@ export default function RTLPage() {
                 tabContent: (
                   <Tasks
                     checkedIndexes={[0]}
-                    tasksIndexes={[0, 1]}
-                    tasks={website}
                     rtlActive
+                    tasks={website}
+                    tasksIndexes={[0, 1]}
                   />
                 ),
               },
@@ -252,16 +259,17 @@ export default function RTLPage() {
                 tabContent: (
                   <Tasks
                     checkedIndexes={[1]}
-                    tasksIndexes={[0, 1, 2]}
-                    tasks={server}
                     rtlActive
+                    tasks={server}
+                    tasksIndexes={[0, 1, 2]}
                   />
                 ),
               },
             ]}
+            title="وظایف:"
           />
         </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem md={6} sm={12} xs={12}>
           <Card>
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>آمار کارکنان</h4>
@@ -271,36 +279,42 @@ export default function RTLPage() {
             </CardHeader>
             <CardBody>
               <Table
-                tableHeaderColor="warning"
-                tableHead={['کد', 'نام', 'حقوق', 'استان']}
                 tableData={[
+                  // eslint-disable-next-line no-tabs
                   ['1', 'احمد حسینی	', '$36,738', 'مازندران'],
+                  // eslint-disable-next-line no-tabs
                   ['2', 'مینا رضایی	', '$23,789', 'گلستان'],
+                  // eslint-disable-next-line no-tabs
                   ['3', 'مبینا احمدپور	', '$56,142', 'تهران'],
+                  // eslint-disable-next-line no-tabs
                   ['4', 'جلال آقایی	', '$38,735', 'شهرکرد'],
                 ]}
+                tableHead={['کد', 'نام', 'حقوق', 'استان']}
+                tableHeaderColor="warning"
               />
             </CardBody>
           </Card>
         </GridItem>
       </GridContainer>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem md={6} sm={12} xs={12}>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>اعلان ها</h4>
               <p className={classes.cardCategoryWhite}>
                 يدويا من قبل أصدقائنا من{' '}
                 <a
-                  target="_blank"
                   href="https://material-ui-next.com/?ref=''time"
+                  rel="noreferrer"
+                  target="_blank"
                 >
                   واجهة المستخدم المادية
                 </a>{' '}
                 ونصب من قبل{' '}
                 <a
-                  target="_blank"
                   href="https://www.''-tim.com/?ref=mdr-rtl-page"
+                  rel="noreferrer"
+                  target="_blank"
                 >
                   الإبداعية تيم
                 </a>
@@ -313,35 +327,35 @@ export default function RTLPage() {
             </CardHeader>
             <CardBody>
               <SnackbarContent
+                close
+                color="warning"
                 message={
                   'این یک اعلان است که با کلاس color="warning" ایجاد شده است.'
                 }
-                close
                 rtlActive
-                color="warning"
               />
               <SnackbarContent
+                close
+                color="primary"
                 message={
                   'این یک اعلان است که با کلاس color="primary" ایجاد شده است.'
                 }
-                close
                 rtlActive
-                color="primary"
               />
               <SnackbarContent
-                message={'این یک اعلان با دکمه بستن و آیکن است'}
                 close
-                rtlActive
                 color="info"
+                message="این یک اعلان با دکمه بستن و آیکن است"
+                rtlActive
               />
             </CardBody>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem md={6} sm={12} xs={12}>
           <Card profile>
             <CardAvatar profile>
-              <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                <img src={avatar} alt="..." />
+              <a href="#pablo" onClick={(event) => event.preventDefault()}>
+                <img alt="..." src={avatar} />
               </a>
             </CardAvatar>
             <CardBody profile>

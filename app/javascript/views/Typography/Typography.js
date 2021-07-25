@@ -3,16 +3,16 @@ import React from 'react'
 // @material-ui/core components
 import { makeStyles } from '@material-ui/core/styles'
 // core components
-import Quote from 'components/Typography/Quote.js'
-import Muted from 'components/Typography/Muted.js'
-import Primary from 'components/Typography/Primary.js'
-import Info from 'components/Typography/Info.js'
-import Success from 'components/Typography/Success.js'
-import Warning from 'components/Typography/Warning.js'
-import Danger from 'components/Typography/Danger.js'
-import Card from 'components/Card/Card.js'
-import CardHeader from 'components/Card/CardHeader.js'
-import CardBody from 'components/Card/CardBody.js'
+import Quote from 'components/Typography/Quote'
+import Muted from 'components/Typography/Muted'
+import Primary from 'components/Typography/Primary'
+import Info from 'components/Typography/Info'
+import Success from 'components/Typography/Success'
+import Warning from 'components/Typography/Warning'
+import Danger from 'components/Typography/Danger'
+import Card from 'components/Card/Card'
+import CardHeader from 'components/Card/CardHeader'
+import CardBody from 'components/Card/CardBody'
 
 const styles = {
   typo: {
@@ -103,7 +103,12 @@ export default function TypographyPage() {
           <div className={classes.note}>Quote</div>
           <Quote
             author=" Kanye West, Musician"
-            text="I will be the leader of a company that ends up being worth billions of dollars, because I got the answers. I understand culture. I am the nucleus. I think that’s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at."
+            text={`${
+              'I will be the leader of a company that ends up being worth billions of dollars, ' +
+              'because I got the answers. I understand culture. I am the nucleus. ' +
+              'I think that’s a responsibility that I have, to push possibilities, ' +
+              'to show people, this is the level that things could be at.'
+            }`}
           />
         </div>
         <div className={classes.typo}>
@@ -153,6 +158,7 @@ export default function TypographyPage() {
           <h2>
             Header with small subtitle
             <br />
+            {/* eslint-disable-next-line react/no-unescaped-entities */}
             <small>Use "Small" tag for the headers</small>
           </h2>
         </div>

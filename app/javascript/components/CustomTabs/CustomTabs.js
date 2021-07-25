@@ -10,18 +10,18 @@ import { makeStyles } from '@material-ui/core/styles'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 // core components
-import Card from 'components/Card/Card.js'
-import CardBody from 'components/Card/CardBody.js'
-import CardHeader from 'components/Card/CardHeader.js'
+import Card from 'components/Card/Card'
+import CardBody from 'components/Card/CardBody'
+import CardHeader from 'components/Card/CardHeader'
 
-import styles from 'assets/jss/material-dashboard-react/components/customTabsStyle.js'
+import styles from 'assets/jss/material-dashboard-react/components/customTabsStyle'
 
 const useStyles = makeStyles(styles)
 
 export default function CustomTabs(props) {
   const [value, setValue] = React.useState(0)
-  const handleChange = (event, value) => {
-    setValue(value)
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
   }
   const classes = useStyles()
   const { headerColor, plainTabs, tabs, title, rtlActive } = props
@@ -33,7 +33,7 @@ export default function CustomTabs(props) {
   return (
     <Card plain={plainTabs}>
       <CardHeader color={headerColor} plain={plainTabs}>
-        {title !== undefined ? <div className={cardTitle}>{title}</div> : null}
+        {title === undefined && <div className={cardTitle}>{title}</div>}
         <Tabs
           classes={{
             root: classes.tabsRoot,
@@ -63,6 +63,7 @@ export default function CustomTabs(props) {
                   wrapper: classes.tabWrapper,
                 }}
                 label={prop.tabName}
+                // eslint-disable-next-line react/jsx-props-no-spreading
                 {...icon}
               />
             )
@@ -91,14 +92,14 @@ CustomTabs.propTypes = {
     'primary',
     'rose',
   ]),
-  title: PropTypes.string,
+  plainTabs: PropTypes.bool,
+  rtlActive: PropTypes.bool,
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
-      tabName: PropTypes.string.isRequired,
-      tabIcon: PropTypes.object,
       tabContent: PropTypes.node.isRequired,
+      tabIcon: PropTypes.object,
+      tabName: PropTypes.string.isRequired,
     }),
   ),
-  rtlActive: PropTypes.bool,
-  plainTabs: PropTypes.bool,
+  title: PropTypes.string,
 }

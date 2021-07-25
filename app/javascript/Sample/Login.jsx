@@ -1,27 +1,22 @@
+/* eslint-disable no-nested-ternary */
 // @flow
 import React, { useCallback, useReducer } from 'react'
-import Register from './Register.jsx'
-import './Login.css'
-import {
-  MuiThemeProvider,
-  makeStyles,
-  createMuiTheme,
-} from '@material-ui/core/styles'
+
+import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
-import { orange, green } from '@material-ui/core/colors'
-import { Lock, Lo } from '@material-ui/icons/Lock'
 import {
   TextField,
   AppBar,
   Toolbar,
   IconButton,
   Typography,
-  Box,
 } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import { LockOpenOutlined, LockOutlined } from '@material-ui/icons'
-import reducer from './Reducer.jsx'
-import ViewData from './ViewData.jsx'
+import reducer from './Reducer'
+import ViewData from './ViewData'
+import Register from './Register'
+import './Login.css'
 
 const initState = {
   age: 18,
@@ -74,7 +69,7 @@ const Login = () => {
     const data = JSON.parse(localStorage.getItem('data'))
     let exist = false
 
-    data.map((obj) => {
+    data.forEach((obj) => {
       if (obj.username === state.username && obj.password === state.password) {
         dispatch({ type: 'login', payload: { value: true } })
         exist = true
@@ -88,6 +83,7 @@ const Login = () => {
       }
     }
   }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const editHandler = useCallback((report) => {
     dispatch({ type: 'user', payload: { value: report.username } })
     dispatch({ type: 'password', payload: { value: report.password } })
@@ -95,6 +91,7 @@ const Login = () => {
     dispatch({ type: 'email', payload: { value: report.email } })
     dispatch({ type: 'phone', payload: { value: report.phone } })
     dispatch({ type: 'age', payload: { value: report.age } })
+    // eslint-disable-next-line no-alert
     alert(report.age)
     dispatch({ type: 'view', payload: { value: false } })
     dispatch({ type: 'edit', payload: { value: true } })
@@ -120,8 +117,7 @@ const Login = () => {
             <Button
               color="inherit"
               onClick={() =>
-                dispatch({ type: 'login', payload: { value: false } })
-              }
+                dispatch({ type: 'login', payload: { value: false } })}
             >
               Logout <LockOutlined />
             </Button>
@@ -137,8 +133,7 @@ const Login = () => {
           <ViewData
             editHandler={editHandler}
             logout={() =>
-              dispatch({ type: 'login', payload: { value: false } })
-            }
+              dispatch({ type: 'login', payload: { value: false } })}
             return={() => dispatch({ type: 'view', payload: { value: false } })}
             styles={classes}
           />
@@ -148,26 +143,22 @@ const Login = () => {
             edit={state.edit}
             email={state.email}
             logout={() =>
-              dispatch({ type: 'login', payload: { value: false } })
-            }
+              dispatch({ type: 'login', payload: { value: false } })}
             name={state.name}
             password={state.password}
             phone={state.phone}
             styles={classes}
             username={state.username}
             viewData={() =>
-              dispatch({ type: 'view', payload: { value: true } })
-            }
+              dispatch({ type: 'view', payload: { value: true } })}
           />
         ) : (
           <Register
             logout={() =>
-              dispatch({ type: 'login', payload: { value: false } })
-            }
+              dispatch({ type: 'login', payload: { value: false } })}
             styles={classes}
             viewData={() =>
-              dispatch({ type: 'view', payload: { value: true } })
-            }
+              dispatch({ type: 'view', payload: { value: true } })}
           />
         )
       ) : (
@@ -179,9 +170,11 @@ const Login = () => {
               color="primary"
               id="outlined-basic"
               label="Enter UserName"
-              onChange={(e) =>
-                dispatch({ type: 'user', payload: { value: e.target.value } })
-              }
+              onChange={(event) =>
+                dispatch({
+                  type: 'user',
+                  payload: { value: event.target.value },
+                })}
               size="small"
               style={{ margin: '10px' }}
               value={state.username}
@@ -193,12 +186,11 @@ const Login = () => {
               color="primary"
               id="outlined-basic"
               label="Enter Password"
-              onChange={(e) =>
+              onChange={(event) =>
                 dispatch({
                   type: 'password',
-                  payload: { value: e.target.value },
-                })
-              }
+                  payload: { value: event.target.value },
+                })}
               size="small"
               style={{ margin: '10px' }}
               type="password"

@@ -17,12 +17,13 @@ import Notifications from '@material-ui/icons/Notifications'
 import Dashboard from '@material-ui/icons/Dashboard'
 import Search from '@material-ui/icons/Search'
 // core components
-import CustomInput from 'components/CustomInput/CustomInput.js'
-import Button from 'components/CustomButtons/Button.js'
+import CustomInput from 'components/CustomInput/CustomInput'
+import Button from 'components/CustomButtons/Button'
 
-import styles from 'assets/jss/material-dashboard-react/components/headerLinksStyle.js'
+import styles from 'assets/jss/material-dashboard-react/components/headerLinksStyle'
 
 const useStyles = makeStyles(styles)
+const defaultWidth = 959
 
 export default function AdminNavbarLinks() {
   const classes = useStyles()
@@ -70,9 +71,9 @@ export default function AdminNavbarLinks() {
       <Button
         aria-label="Dashboard"
         className={classes.buttonLink}
-        color={window.innerWidth > 959 ? 'transparent' : 'white'}
-        justIcon={window.innerWidth > 959}
-        simple={!(window.innerWidth > 959)}
+        color={window.innerWidth > defaultWidth ? 'transparent' : 'white'}
+        justIcon={window.innerWidth > defaultWidth}
+        simple={!(window.innerWidth > defaultWidth)}
       >
         <Dashboard className={classes.icons} />
         <Hidden implementation="css" mdUp>
@@ -84,14 +85,15 @@ export default function AdminNavbarLinks() {
           aria-haspopup="true"
           aria-owns={openNotification ? 'notification-menu-list-grow' : null}
           className={classes.buttonLink}
-          color={window.innerWidth > 959 ? 'transparent' : 'white'}
-          justIcon={window.innerWidth > 959}
+          color={window.innerWidth > defaultWidth ? 'transparent' : 'white'}
+          justIcon={window.innerWidth > defaultWidth}
           onClick={handleClickNotification}
-          simple={!(window.innerWidth > 959)}
+          simple={!(window.innerWidth > defaultWidth)}
         >
           <Notifications className={classes.icons} />
           <span className={classes.notifications}>5</span>
           <Hidden implementation="css" mdUp>
+            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
             <p className={classes.linkText} onClick={handleCloseNotification}>
               Notification
             </p>
@@ -108,6 +110,7 @@ export default function AdminNavbarLinks() {
         >
           {({ TransitionProps, placement }) => (
             <Grow
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...TransitionProps}
               id="notification-menu-list-grow"
               style={{
@@ -134,7 +137,7 @@ export default function AdminNavbarLinks() {
                       className={classes.dropdownItem}
                       onClick={handleCloseNotification}
                     >
-                      You're now friend with Andrew
+                      You&apos;re now friend with Andrew
                     </MenuItem>
                     <MenuItem
                       className={classes.dropdownItem}
@@ -160,10 +163,10 @@ export default function AdminNavbarLinks() {
           aria-haspopup="true"
           aria-owns={openProfile ? 'profile-menu-list-grow' : null}
           className={classes.buttonLink}
-          color={window.innerWidth > 959 ? 'transparent' : 'white'}
-          justIcon={window.innerWidth > 959}
+          color={window.innerWidth > defaultWidth ? 'transparent' : 'white'}
+          justIcon={window.innerWidth > defaultWidth}
           onClick={handleClickProfile}
-          simple={!(window.innerWidth > 959)}
+          simple={!(window.innerWidth > defaultWidth)}
         >
           <Person className={classes.icons} />
           <Hidden implementation="css" mdUp>
@@ -181,6 +184,7 @@ export default function AdminNavbarLinks() {
         >
           {({ TransitionProps, placement }) => (
             <Grow
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...TransitionProps}
               id="profile-menu-list-grow"
               style={{

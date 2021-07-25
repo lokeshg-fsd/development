@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 // @flow
 import React from 'react'
 import { fade, makeStyles } from '@material-ui/core/styles'

@@ -53,9 +53,11 @@ export default function Admin({ ...rest }) {
   const [color, setColor] = React.useState('blue')
   const [fixedClasses, setFixedClasses] = React.useState('dropdown show')
   const [mobileOpen, setMobileOpen] = React.useState(false)
+  // eslint-disable-next-line no-shadow
   const handleImageClick = (image) => {
     setImage(image)
   }
+  // eslint-disable-next-line no-shadow
   const handleColorClick = (color) => {
     setColor(color)
   }
@@ -71,6 +73,7 @@ export default function Admin({ ...rest }) {
   }
   const getRoute = () => window.location.pathname !== '/admin/maps'
   const resizeFunction = () => {
+    // eslint-disable-next-line no-magic-numbers
     if (window.innerWidth >= 960) {
       setMobileOpen(false)
     }
@@ -106,15 +109,16 @@ export default function Admin({ ...rest }) {
         logoText="My Life Saver"
         open={mobileOpen}
         routes={routes}
+        // eslint-disable-next-line react/jsx-props-no-spreading
         {...rest}
       />
       <div ref={mainPanel} className={classes.mainPanel}>
         <Navbar
           handleDrawerToggle={handleDrawerToggle}
           routes={routes}
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...rest}
         />
-        {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
         {getRoute() ? (
           <div className={classes.content}>
             <div className={classes.container}>{switchRoutes}</div>

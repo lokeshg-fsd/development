@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 // @material-ui/icons
 
 // core components
-import styles from 'assets/jss/material-dashboard-react/components/cardFooterStyle.js'
+import styles from 'assets/jss/material-dashboard-react/components/cardFooterStyle'
 
 const useStyles = makeStyles(styles)
 
@@ -26,6 +26,7 @@ export default function CardFooter(props) {
   })
 
   return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <div className={cardFooterClasses} {...rest}>
       {children}
     </div>
@@ -33,10 +34,10 @@ export default function CardFooter(props) {
 }
 
 CardFooter.propTypes = {
+  chart: PropTypes.bool,
+  children: PropTypes.node,
   className: PropTypes.string,
   plain: PropTypes.bool,
   profile: PropTypes.bool,
   stats: PropTypes.bool,
-  chart: PropTypes.bool,
-  children: PropTypes.node,
 }

@@ -10,8 +10,6 @@
 
  =========================================================
 
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
  */
 
 // ##############################
@@ -22,14 +20,16 @@
 // // // Example: input = 999 => output = 153, 153, 153
 // #############################
 // @flow
-const hexToRgb = (input) => {
-  input = String(input)
-  input = input.replace('#', '')
+const hexToRgb = (value) => {
+  const newValue: string = String(value)
+  let input = newValue.replace('#', '')
   const hexRegex = /[0-9A-Fa-f]/g
 
+  // eslint-disable-next-line no-magic-numbers
   if (!hexRegex.test(input) || (input.length !== 3 && input.length !== 6)) {
     throw new Error('input is not a valid hex color.')
   }
+  // eslint-disable-next-line no-magic-numbers
   if (input.length === 3) {
     const first = input[0]
     const second = input[1]

@@ -16,12 +16,14 @@ import Notifications from '@material-ui/icons/Notifications'
 import Dashboard from '@material-ui/icons/Dashboard'
 import Search from '@material-ui/icons/Search'
 // core components
-import CustomInput from 'components/CustomInput/CustomInput.js'
-import Button from 'components/CustomButtons/Button.js'
+import CustomInput from 'components/CustomInput/CustomInput'
+import Button from 'components/CustomButtons/Button'
 
-import styles from 'assets/jss/material-dashboard-react/components/rtlHeaderLinksStyle.js'
+import styles from 'assets/jss/material-dashboard-react/components/rtlHeaderLinksStyle'
 
 const useStyles = makeStyles(styles)
+
+const dafaultWidth = 959
 
 export default function RTLNavbarLinks() {
   const classes = useStyles()
@@ -59,9 +61,9 @@ export default function RTLNavbarLinks() {
       <Button
         aria-label="Dashboard"
         className={classes.buttonLink}
-        color={window.innerWidth > 959 ? 'transparent' : 'white'}
-        justIcon={window.innerWidth > 959}
-        simple={!(window.innerWidth > 959)}
+        color={window.innerWidth > dafaultWidth ? 'transparent' : 'white'}
+        justIcon={window.innerWidth > dafaultWidth}
+        simple={!(window.innerWidth > dafaultWidth)}
       >
         <Dashboard className={classes.icons} />
         <Hidden implementation="css" mdUp>
@@ -73,14 +75,15 @@ export default function RTLNavbarLinks() {
           aria-haspopup="true"
           aria-owns={open ? 'menu-list-grow' : null}
           className={classes.buttonLink}
-          color={window.innerWidth > 959 ? 'transparent' : 'white'}
-          justIcon={window.innerWidth > 959}
+          color={window.innerWidth > dafaultWidth ? 'transparent' : 'white'}
+          justIcon={window.innerWidth > dafaultWidth}
           onClick={handleToggle}
-          simple={!(window.innerWidth > 959)}
+          simple={!(window.innerWidth > dafaultWidth)}
         >
           <Notifications className={classes.icons} />
           <span className={classes.notifications}>۵</span>
           <Hidden implementation="css" mdUp>
+            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
             <p className={classes.linkText} onClick={handleToggle}>
               اعلان‌ها
             </p>
@@ -97,6 +100,7 @@ export default function RTLNavbarLinks() {
         >
           {({ TransitionProps, placement }) => (
             <Grow
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...TransitionProps}
               id="menu-list-grow"
               style={{
@@ -147,9 +151,9 @@ export default function RTLNavbarLinks() {
       <Button
         aria-label="Person"
         className={classes.buttonLink}
-        color={window.innerWidth > 959 ? 'transparent' : 'white'}
-        justIcon={window.innerWidth > 959}
-        simple={!(window.innerWidth > 959)}
+        color={window.innerWidth > dafaultWidth ? 'transparent' : 'white'}
+        justIcon={window.innerWidth > dafaultWidth}
+        simple={!(window.innerWidth > dafaultWidth)}
       >
         <Person className={classes.icons} />
         <Hidden implementation="css" mdUp>

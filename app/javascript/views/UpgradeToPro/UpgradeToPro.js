@@ -6,14 +6,14 @@ import { makeStyles } from '@material-ui/core/styles'
 import Close from '@material-ui/icons/Close'
 import Check from '@material-ui/icons/Check'
 // core components
-import GridItem from 'components/Grid/GridItem.js'
-import GridContainer from 'components/Grid/GridContainer.js'
-import Danger from 'components/Typography/Danger.js'
-import Success from 'components/Typography/Success.js'
-import Button from 'components/CustomButtons/Button.js'
-import Card from 'components/Card/Card.js'
-import CardHeader from 'components/Card/CardHeader.js'
-import CardBody from 'components/Card/CardBody.js'
+import GridItem from 'components/Grid/GridItem'
+import GridContainer from 'components/Grid/GridContainer'
+import Danger from 'components/Typography/Danger'
+import Success from 'components/Typography/Success'
+import Button from 'components/CustomButtons/Button'
+import Card from 'components/Card/Card'
+import CardHeader from 'components/Card/CardHeader'
+import CardBody from 'components/Card/CardBody'
 
 const styles = {
   cardCategoryWhite: {
@@ -105,6 +105,7 @@ export default function UpgradeToPro() {
               <table className={classes.table}>
                 <thead>
                   <tr>
+                    {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                     <th />
                     <th className={classes.center}>Free</th>
                     <th className={classes.center}>PRO</th>

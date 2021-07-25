@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable no-unused-vars */
 // @flow
 
 import React, { useMemo, useState, Fragment, useEffect } from 'react'
@@ -21,7 +23,7 @@ function Table({ data }: Props) {
         {data.map((value, index) => (
           <>
             <div key={index}>
-              <label key={index} title={JSON.stringify(value)} />
+              <label title={JSON.stringify(value)} />
               {Object.keys(value).map((key) => (
                 <>
                   <label key={key} title={JSON.stringify(value[key])} />

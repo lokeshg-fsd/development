@@ -1,4 +1,5 @@
 // @flow
+
 import React from 'react'
 // react plugin for creating charts
 import ChartistGraph from 'react-chartist'
@@ -18,27 +19,27 @@ import BugReport from '@material-ui/icons/BugReport'
 import Code from '@material-ui/icons/Code'
 import Cloud from '@material-ui/icons/Cloud'
 // core components
-import GridItem from 'components/Grid/GridItem.js'
-import GridContainer from 'components/Grid/GridContainer.js'
-import Table from 'components/Table/Table.js'
-import Tasks from 'components/Tasks/Tasks.js'
-import CustomTabs from 'components/CustomTabs/CustomTabs.js'
-import Danger from 'components/Typography/Danger.js'
-import Card from 'components/Card/Card.js'
-import CardHeader from 'components/Card/CardHeader.js'
-import CardIcon from 'components/Card/CardIcon.js'
-import CardBody from 'components/Card/CardBody.js'
-import CardFooter from 'components/Card/CardFooter.js'
+import GridItem from 'components/Grid/GridItem'
+import GridContainer from 'components/Grid/GridContainer'
+import Table from 'components/Table/Table'
+import Tasks from 'components/Tasks/Tasks'
+import CustomTabs from 'components/CustomTabs/CustomTabs'
+import Danger from 'components/Typography/Danger'
+import Card from 'components/Card/Card'
+import CardHeader from 'components/Card/CardHeader'
+import CardIcon from 'components/Card/CardIcon'
+import CardBody from 'components/Card/CardBody'
+import CardFooter from 'components/Card/CardFooter'
 
-import { bugs, website, server } from 'variables/general.js'
+import { bugs, website, server } from 'variables/general'
 
 import {
   dailySalesChart,
   emailsSubscriptionChart,
   completedTasksChart,
-} from 'variables/charts.js'
+} from 'variables/charts'
 
-import styles from 'assets/jss/material-dashboard-react/views/dashboardStyle.js'
+import styles from 'assets/jss/material-dashboard-react/views/dashboardStyle'
 
 const useStyles = makeStyles(styles)
 
@@ -64,7 +65,7 @@ export default function Dashboard() {
                 <Danger>
                   <Warning />
                 </Danger>
-                <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                <a href="#pablo" onClick={(event) => event.preventDefault()}>
                   Get more space
                 </a>
               </div>
@@ -207,8 +208,10 @@ export default function Dashboard() {
                 tabIcon: BugReport,
                 tabContent: (
                   <Tasks
+                    // eslint-disable-next-line no-magic-numbers
                     checkedIndexes={[0, 3]}
                     tasks={bugs}
+                    // eslint-disable-next-line no-magic-numbers
                     tasksIndexes={[0, 1, 2, 3]}
                   />
                 ),

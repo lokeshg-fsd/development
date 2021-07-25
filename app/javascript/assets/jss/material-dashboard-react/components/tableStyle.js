@@ -8,7 +8,7 @@ import {
   roseColor,
   grayColor,
   defaultFont,
-} from 'assets/jss/material-dashboard-react.js'
+} from 'assets/jss/material-dashboard-react'
 
 const tableStyle = (theme) => ({
   warningTableHeader: {
@@ -56,6 +56,7 @@ const tableStyle = (theme) => ({
   },
   tableResponsive: {
     width: '100%',
+    // eslint-disable-next-line no-magic-numbers
     marginTop: theme.spacing(3),
     overflowX: 'auto',
   },

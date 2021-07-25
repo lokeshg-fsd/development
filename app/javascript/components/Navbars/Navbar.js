@@ -11,14 +11,14 @@ import Hidden from '@material-ui/core/Hidden'
 // @material-ui/icons
 import Menu from '@material-ui/icons/Menu'
 // core components
-import Button from 'components/CustomButtons/Button.js'
+import Button from 'components/CustomButtons/Button'
 
 // hooks
 import { useRouteName } from 'hooks'
 
-import styles from 'assets/jss/material-dashboard-react/components/headerStyle.js'
-import RTLNavbarLinks from './RTLNavbarLinks.js'
-import AdminNavbarLinks from './AdminNavbarLinks.js'
+import styles from 'assets/jss/material-dashboard-react/components/headerStyle'
+import RTLNavbarLinks from './RTLNavbarLinks'
+import AdminNavbarLinks from './AdminNavbarLinks'
 
 const useStyles = makeStyles(styles)
 
@@ -58,7 +58,7 @@ export default function Header(props) {
 
 Header.propTypes = {
   color: PropTypes.oneOf(['primary', 'info', 'success', 'warning', 'danger']),
-  rtlActive: PropTypes.bool,
   handleDrawerToggle: PropTypes.func,
   routes: PropTypes.arrayOf(PropTypes.object),
+  rtlActive: PropTypes.bool,
 }

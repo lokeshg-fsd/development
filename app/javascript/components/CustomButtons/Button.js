@@ -9,7 +9,7 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
-import styles from 'assets/jss/material-dashboard-react/components/buttonStyle.js'
+import styles from 'assets/jss/material-dashboard-react/components/buttonStyle'
 
 const useStyles = makeStyles(styles)
 
@@ -43,6 +43,7 @@ export default function RegularButton(props) {
   })
 
   return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <Button {...rest} classes={muiClasses} className={btnClasses}>
       {children}
     </Button>
@@ -50,6 +51,9 @@ export default function RegularButton(props) {
 }
 
 RegularButton.propTypes = {
+  block: PropTypes.bool,
+  children: PropTypes.node,
+  className: PropTypes.string,
   color: PropTypes.oneOf([
     'primary',
     'info',
@@ -60,15 +64,12 @@ RegularButton.propTypes = {
     'white',
     'transparent',
   ]),
-  size: PropTypes.oneOf(['sm', 'lg']),
-  simple: PropTypes.bool,
-  round: PropTypes.bool,
   disabled: PropTypes.bool,
-  block: PropTypes.bool,
-  link: PropTypes.bool,
   justIcon: PropTypes.bool,
-  className: PropTypes.string,
-  // use this to pass the classes props from Material-UI
+  link: PropTypes.bool,
   muiClasses: PropTypes.object,
-  children: PropTypes.node,
+  round: PropTypes.bool,
+  simple: PropTypes.bool,
+  size: PropTypes.oneOf(['sm', 'lg']),
+  // use this to pass the classes props from Material-UI
 }

@@ -1,5 +1,5 @@
 // @flow
-import { hexToRgb, whiteColor } from 'assets/jss/material-dashboard-react.js'
+import { hexToRgb, whiteColor } from 'assets/jss/material-dashboard-react'
 
 const customTabsStyle = {
   cardTitle: {
