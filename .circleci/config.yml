@@ -1,28 +1,93 @@
-name: CI
+version: 2.1
 
-on: 
-  push:
-    branches:    
-      - main 
+commands:
+  js_steps:
+    steps:
+      - checkout
+      - run:
+          name: 'Update Node.js and npm'
+          command: |
+            curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
+            curl https://www.npmjs.com/install.sh | sudo bash
+      - run:
+          name: Check current version of node
+          command: node -v
+      - run: npm install
+
+  shared_steps:
+    steps:
+      - checkout
+      # - run: sudo apt install -y mysql-client
+      # Restore Cached Dependencies
+      - restore_cache:
+          name: Restore bundle cache
+          key: administrate-{{ checksum "Gemfile.lock" }}
+
+      # Bundle install dependencies
+      - run: gem install bundler
+      - run: bundle install --path vendor/bundle
+
+      # Cache Dependencies
+      - save_cache:
+          name: Store bundle cache
+          key: administrate-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      # Setup the database
+      - run: bundle exec rake db:create
+      - run: bundle exec rake db:setup
+
+      # Run the tests
+      - run: bundle exec rake
+
+default_job: &default_job
+  working_directory: ~/app
+  steps:
+    - shared_steps
+    # Run the tests against multiple versions of Rails
+    - run: bundle exec appraisal install
+    - run: bundle exec appraisal rake
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:    
-    - name: yarn install
-      run: |
-        yarn install
-    - name: yarn test
-      run: |
-        yarn test 
-      env:
-        CI: true
-      
-    - name: yarn build
-      run: |
-        yarn run build --if-present
-    - name: Check for RuboCop
-      run: rubocop
-    - name: JS Linters
-      run: |
-          yarn run prettier || yarn run eslintx:all
+  ruby-tests:
+    working_directory: ~/app
+    steps:
+      - shared_steps
+      - run: rubocop
+    docker:
+      - image: cimg/ruby:2.7.1-node
+        environment:
+          PGHOST: localhost
+          PGUSER: administrate
+          RAILS_ENV: test
+      - image: mysql:5.7
+        environment:
+          # MYSQL_USER: root
+          MYSQL_ROOT_PASSWORD: root
+
+  js-linters:
+    working_directory: ~/app
+    steps:
+      - js_steps
+      - run:
+          name: 'Run Prettier'
+          when: 'always'
+          command: npm run prettier:all
+      - run:
+          name: 'Run Eslint'
+          when: 'always'
+          command: npm run eslintx:all
+    docker:
+      - image: cimg/ruby:2.7.1-node
+        environment:
+          PGHOST: localhost
+          PGUSER: administrate
+          RAILS_ENV: test
+
+workflows:
+  version: 2
+  multiple-rubies:
+    jobs:
+      - ruby-tests
+      - js-linters

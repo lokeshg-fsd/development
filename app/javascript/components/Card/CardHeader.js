@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 // @material-ui/icons
 
 // core components
-import styles from 'assets/jss/material-dashboard-react/components/cardHeaderStyle.js'
+import styles from 'assets/jss/material-dashboard-react/components/cardHeaderStyle'
 
 const useStyles = makeStyles(styles)
 
@@ -26,6 +26,7 @@ export default function CardHeader(props) {
   })
 
   return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <div className={cardHeaderClasses} {...rest}>
       {children}
     </div>
@@ -33,6 +34,7 @@ export default function CardHeader(props) {
 }
 
 CardHeader.propTypes = {
+  children: PropTypes.node,
   className: PropTypes.string,
   color: PropTypes.oneOf([
     'warning',
@@ -42,8 +44,7 @@ CardHeader.propTypes = {
     'primary',
     'rose',
   ]),
+  icon: PropTypes.bool,
   plain: PropTypes.bool,
   stats: PropTypes.bool,
-  icon: PropTypes.bool,
-  children: PropTypes.node,
 }

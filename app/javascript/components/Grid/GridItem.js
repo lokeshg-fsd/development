@@ -19,6 +19,7 @@ export default function GridItem(props) {
   const { children, ...rest } = props
 
   return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <Grid item {...rest} className={classes.grid}>
       {children}
     </Grid>

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 // @flow
 import React from 'react'
 import classNames from 'classnames'
@@ -11,7 +12,7 @@ import Input from '@material-ui/core/Input'
 import Clear from '@material-ui/icons/Clear'
 import Check from '@material-ui/icons/Check'
 // core components
-import styles from 'assets/jss/material-dashboard-react/components/customInputStyle.js'
+import styles from 'assets/jss/material-dashboard-react/components/customInputStyle'
 
 const useStyles = makeStyles(styles)
 
@@ -51,18 +52,20 @@ export default function CustomInput(props) {
 
   return (
     <FormControl
+      // eslint-disable-next-line react/jsx-props-no-spreading
       {...formControlProps}
       className={`${formControlProps.className} ${classes.formControl}`}
     >
-      {labelText !== undefined ? (
+      {labelText === undefined && (
         <InputLabel
           className={classes.labelRoot + labelClasses}
           htmlFor={id}
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...labelProps}
         >
           {labelText}
         </InputLabel>
-      ) : null}
+      )}
       <Input
         classes={{
           root: marginTop,
@@ -70,6 +73,7 @@ export default function CustomInput(props) {
           underline: underlineClasses,
         }}
         id={id}
+        // eslint-disable-next-line react/jsx-props-no-spreading
         {...inputProps}
         inputProps={newInputProps}
       />
@@ -83,12 +87,12 @@ export default function CustomInput(props) {
 }
 
 CustomInput.propTypes = {
-  labelText: PropTypes.node,
-  labelProps: PropTypes.object,
+  error: PropTypes.bool,
+  formControlProps: PropTypes.object,
   id: PropTypes.string,
   inputProps: PropTypes.object,
-  formControlProps: PropTypes.object,
-  error: PropTypes.bool,
-  success: PropTypes.bool,
+  labelProps: PropTypes.object,
+  labelText: PropTypes.node,
   rtlActive: PropTypes.bool,
+  success: PropTypes.bool,
 }

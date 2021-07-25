@@ -16,7 +16,7 @@ import Edit from '@material-ui/icons/Edit'
 import Close from '@material-ui/icons/Close'
 import Check from '@material-ui/icons/Check'
 // core components
-import styles from 'assets/jss/material-dashboard-react/components/tasksStyle.js'
+import styles from 'assets/jss/material-dashboard-react/components/tasksStyle'
 
 const useStyles = makeStyles(styles)
 
@@ -98,8 +98,8 @@ export default function Tasks(props) {
 }
 
 Tasks.propTypes = {
-  tasksIndexes: PropTypes.arrayOf(PropTypes.number),
-  tasks: PropTypes.arrayOf(PropTypes.node),
-  rtlActive: PropTypes.bool,
   checkedIndexes: PropTypes.array,
+  rtlActive: PropTypes.bool,
+  tasks: PropTypes.arrayOf(PropTypes.node),
+  tasksIndexes: PropTypes.arrayOf(PropTypes.number),
 }

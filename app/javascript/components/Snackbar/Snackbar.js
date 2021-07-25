@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton'
 // @material-ui/icons
 import Close from '@material-ui/icons/Close'
 // core components
-import styles from 'assets/jss/material-dashboard-react/components/snackbarContentStyle.js'
+import styles from 'assets/jss/material-dashboard-react/components/snackbarContentStyle'
 
 const useStyles = makeStyles(styles)
 
@@ -35,17 +35,20 @@ export default function Snackbar(props) {
     ]
   }
 
+  const alignment = (align: string) => {
+    if (align.indexOf('l') > -1) {
+      return 'left'
+    }
+
+    return align.indexOf('c') > -1 ? 'center' : 'right'
+  }
+
   return (
     <Snack
       action={action}
       anchorOrigin={{
         vertical: place.indexOf('t') === -1 ? 'bottom' : 'top',
-        horizontal:
-          place.indexOf('l') !== -1
-            ? 'left'
-            : place.indexOf('c') !== -1
-            ? 'center'
-            : 'right',
+        horizontal: alignment(place),
       }}
       ContentProps={{
         classes: {
@@ -56,7 +59,7 @@ export default function Snackbar(props) {
       }}
       message={
         <div>
-          {icon !== undefined ? <props.icon className={classes.icon} /> : null}
+          {icon === undefined && <props.icon className={classes.icon} />}
           <span className={messageClasses}>{message}</span>
         </div>
       }
@@ -66,12 +69,12 @@ export default function Snackbar(props) {
 }
 
 Snackbar.propTypes = {
-  message: PropTypes.node.isRequired,
-  color: PropTypes.oneOf(['info', 'success', 'warning', 'danger', 'primary']),
   close: PropTypes.bool,
-  icon: PropTypes.object,
-  place: PropTypes.oneOf(['tl', 'tr', 'tc', 'br', 'bl', 'bc']),
-  open: PropTypes.bool,
-  rtlActive: PropTypes.bool,
   closeNotification: PropTypes.func,
+  color: PropTypes.oneOf(['info', 'success', 'warning', 'danger', 'primary']),
+  icon: PropTypes.object,
+  message: PropTypes.node.isRequired,
+  open: PropTypes.bool,
+  place: PropTypes.oneOf(['tl', 'tr', 'tc', 'br', 'bl', 'bc']),
+  rtlActive: PropTypes.bool,
 }

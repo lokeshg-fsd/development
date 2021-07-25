@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable no-alert */
+/* eslint-disable react/prop-types */
 // @flow
 import React, { useReducer } from 'react'
 import './Home.css'
@@ -7,10 +10,11 @@ import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import ViewAgenda from '@material-ui/icons/ViewAgenda'
 import SaveIcon from '@material-ui/icons/Save'
-import reducer from './Reducer.jsx'
+import reducer from './Reducer'
 
 const Register = (props) => {
   const initState = {
+    // eslint-disable-next-line no-magic-numbers
     age: props.age ? props.age : 18,
     name: props.name ? props.name : '',
     email: props.email ? props.email : '',
@@ -30,7 +34,6 @@ const Register = (props) => {
     )
     const resultnp = !!String(state.password).match('[A-Za-z0-9!@#$%^&]{8,}')
 
-    debugger
     if (resultnn === false) {
       alert('Invalid Name')
       dispatch({ type: 'name' })
@@ -70,7 +73,9 @@ const Register = (props) => {
     let count = 0
     const data = JSON.parse(localStorage.getItem('data'))
 
-    data.map((obj) => {
+    data.forEach((item) => {
+      const obj = item
+
       if (obj.username === state.username && count === 0) {
         obj.name = state.name
         obj.email = state.email
@@ -120,7 +125,7 @@ const Register = (props) => {
 
         if (localStorage.getItem('data')) {
           data = JSON.parse(localStorage.getItem('data'))
-          data.map((obj) => {
+          data.forEach((obj) => {
             if (obj.username === state.username) {
               alert('Username Already Exists Please Try Again')
               exist = true
@@ -157,8 +162,8 @@ const Register = (props) => {
 
         alert(`${data1} Unable to Process`)
       }
-    } catch (e) {
-      alert(e)
+    } catch (exception) {
+      alert(exception)
     }
   }
 
@@ -172,8 +177,8 @@ const Register = (props) => {
             color="primary"
             id="outlined-basic"
             label="Enter Name"
-            onChange={(e) =>
-              dispatch({ type: 'name', payload: { value: e.target.value } })
+            onChange={(event) =>
+              dispatch({ type: 'name', payload: { value: event.target.value } })
             }
             size="small"
             style={{ margin: '10px' }}
@@ -186,8 +191,8 @@ const Register = (props) => {
             color="primary"
             id="outlined-basic"
             label="Enter UserName"
-            onChange={(e) =>
-              dispatch({ type: 'user', payload: { value: e.target.value } })
+            onChange={(event) =>
+              dispatch({ type: 'user', payload: { value: event.target.value } })
             }
             size="small"
             style={{ margin: '10px' }}
@@ -200,8 +205,11 @@ const Register = (props) => {
             color="primary"
             id="outlined-basic"
             label="Enter Email"
-            onChange={(e) =>
-              dispatch({ type: 'email', payload: { value: e.target.value } })
+            onChange={(event) =>
+              dispatch({
+                type: 'email',
+                payload: { value: event.target.value },
+              })
             }
             size="small"
             style={{ margin: '10px' }}
@@ -246,8 +254,11 @@ const Register = (props) => {
             color="primary"
             id="outlined-basic"
             label="Enter Phone"
-            onChange={(e) =>
-              dispatch({ type: 'phone', payload: { value: e.target.value } })
+            onChange={(event) =>
+              dispatch({
+                type: 'phone',
+                payload: { value: event.target.value },
+              })
             } //
             size="small"
             style={{ margin: '10px' }}
@@ -260,8 +271,11 @@ const Register = (props) => {
             color="primary"
             id="outlined-basic"
             label="Enter Password"
-            onChange={(e) =>
-              dispatch({ type: 'password', payload: { value: e.target.value } })
+            onChange={(event) =>
+              dispatch({
+                type: 'password',
+                payload: { value: event.target.value },
+              })
             } //
             size="small"
             style={{ margin: '10px' }}
@@ -275,8 +289,11 @@ const Register = (props) => {
             color="primary"
             id="outlined-basic"
             label="Enter Confirm Password "
-            onChange={(e) =>
-              dispatch({ type: 'confirm', payload: { value: e.target.value } })
+            onChange={(event) =>
+              dispatch({
+                type: 'confirm',
+                payload: { value: event.target.value },
+              })
             } //
             size="small"
             style={{ margin: '10px' }}

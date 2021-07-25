@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 // @material-ui/icons
 // core components
 
-import styles from 'assets/jss/material-dashboard-react/components/cardAvatarStyle.js'
+import styles from 'assets/jss/material-dashboard-react/components/cardAvatarStyle'
 
 const useStyles = makeStyles(styles)
 
@@ -24,6 +24,7 @@ export default function CardAvatar(props) {
   })
 
   return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <div className={cardAvatarClasses} {...rest}>
       {children}
     </div>
@@ -33,6 +34,6 @@ export default function CardAvatar(props) {
 CardAvatar.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
-  profile: PropTypes.bool,
   plain: PropTypes.bool,
+  profile: PropTypes.bool,
 }

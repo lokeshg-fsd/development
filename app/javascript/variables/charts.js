@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 // ##############################
 // // // javascript library for creating charts
 // #############################
@@ -39,6 +40,7 @@ const dailySalesChart = {
     draw(data) {
       if (data.type === 'line' || data.type === 'area') {
         data.element.animate({
+          // eslint-disable-next-line id-length
           d: {
             begin: 600,
             dur: 700,
@@ -157,6 +159,7 @@ const completedTasksChart = {
     draw(data) {
       if (data.type === 'line' || data.type === 'area') {
         data.element.animate({
+          // eslint-disable-next-line id-length
           d: {
             begin: 600,
             dur: 700,

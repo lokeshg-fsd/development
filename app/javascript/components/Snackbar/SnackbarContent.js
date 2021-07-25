@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton'
 // @material-ui/icons
 import Close from '@material-ui/icons/Close'
 // core components
-import styles from 'assets/jss/material-dashboard-react/components/snackbarContentStyle.js'
+import styles from 'assets/jss/material-dashboard-react/components/snackbarContentStyle'
 
 const useStyles = makeStyles(styles)
 
@@ -44,7 +44,7 @@ export default function SnackbarContent(props) {
       }}
       message={
         <div>
-          {icon !== undefined ? <props.icon className={classes.icon} /> : null}
+          {icon === undefined && <props.icon className={classes.icon} />}
           <span className={messageClasses}>{message}</span>
         </div>
       }
@@ -53,9 +53,9 @@ export default function SnackbarContent(props) {
 }
 
 SnackbarContent.propTypes = {
-  message: PropTypes.node.isRequired,
-  color: PropTypes.oneOf(['info', 'success', 'warning', 'danger', 'primary']),
   close: PropTypes.bool,
+  color: PropTypes.oneOf(['info', 'success', 'warning', 'danger', 'primary']),
   icon: PropTypes.object,
+  message: PropTypes.node.isRequired,
   rtlActive: PropTypes.bool,
 }

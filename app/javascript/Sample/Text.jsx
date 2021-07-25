@@ -21,7 +21,7 @@ class Text extends UIComponent {
 
   render() {
     this.children = [
-      <div>
+      <div key={this.column.dataField}>
         <TextField
           label="Edit"
           onChange={this.handleChange}

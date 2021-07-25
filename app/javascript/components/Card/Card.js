@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 // @material-ui/icons
 
 // core components
-import styles from 'assets/jss/material-dashboard-react/components/cardStyle.js'
+import styles from 'assets/jss/material-dashboard-react/components/cardStyle'
 
 const useStyles = makeStyles(styles)
 
@@ -25,6 +25,7 @@ export default function Card(props) {
   })
 
   return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <div className={cardClasses} {...rest}>
       {children}
     </div>
@@ -32,9 +33,9 @@ export default function Card(props) {
 }
 
 Card.propTypes = {
+  chart: PropTypes.bool,
+  children: PropTypes.node,
   className: PropTypes.string,
   plain: PropTypes.bool,
   profile: PropTypes.bool,
-  chart: PropTypes.bool,
-  children: PropTypes.node,
 }
