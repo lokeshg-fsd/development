@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # in lib/rails_admin/unconfirmed.rb
 
 require 'rails_admin/config/actions'
