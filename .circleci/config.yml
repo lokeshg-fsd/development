@@ -1,13 +1,10 @@
-name: CI
+version: 1.4
+name: Development
 
-on: 
-  push:
-    branches:    
-      - master 
+on: [push pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     
     strategy:
