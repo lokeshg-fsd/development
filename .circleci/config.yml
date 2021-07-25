@@ -12,6 +12,7 @@ commands:
           key: administrate-{{ checksum "Gemfile.lock" }}
 
       # Bundle install dependencies
+      - run: gem install bundler
       - run: bundle install --path vendor/bundle
 
       # Cache Dependencies
