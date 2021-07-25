@@ -2,6 +2,27 @@
 version: 2.1
 
 commands:
+  js_steps:
+    steps:
+      - checkout
+      - run:
+          name: "Update Node.js and npm"
+          command: |
+            curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
+            curl https://www.npmjs.com/install.sh | sudo bash
+      - run:
+          name: Check current version of node
+          command: node -v
+      - run: npm install
+      - run: 
+          name: 'Run Prettier'
+          when: 'always'
+          command: npm run prettier:all
+      - run: 
+          name: 'Run Eslint'
+          when: 'always'
+          command: npm run eslintx:all
+  
   shared_steps:
     steps:
       - checkout
@@ -13,12 +34,7 @@ commands:
 
       # Bundle install dependencies
       - run: gem install bundler
-      - run: yarn install
       - run: bundle install --path vendor/bundle
-      - run:
-          name: 'Run prettier'
-          when: 'always'
-          command: yarn prettier:all
       
       # Cache Dependencies
       - save_cache:
@@ -51,7 +67,7 @@ jobs:
   ruby-25:
     <<: *default_job
     docker:
-      - image: circleci/ruby:2.5.0-node:16.5.0-browsers
+      - image: cimg/ruby:2.7.1-node-browsers
         environment:
           PGHOST: localhost
           PGUSER: administrate
@@ -65,17 +81,17 @@ jobs:
   js-linters:
     working_directory: ~/app
     steps:
-      - shared_steps
+      - js_steps
       - run:
           name: 'Run prettier'
           when: 'always'
-          command: yarn prettier:all
+          command: npm prettier:all
       - run:
           name: 'Run Eslint'
           when: 'always'
-          command: yarn eslint:all
+          command: npm eslint:all
     docker:
-      - image: circleci/ruby:2.5.0-node:16.5.0-browsers
+      - image: cimg/ruby:2.7.1-node-browsers
         environment:
           PGHOST: localhost
           PGUSER: administrate
@@ -91,7 +107,7 @@ jobs:
   ruby-26:
     <<: *default_job
     docker:
-      - image: circleci/ruby:2.5.0-node:16.5.0-browsers
+      - image: cimg/ruby:2.7.1-node-browsers
         environment:
           PGHOST: localhost
           PGUSER: administrate
