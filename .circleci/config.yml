@@ -14,14 +14,6 @@ commands:
           name: Check current version of node
           command: node -v
       - run: npm install
-      - run: 
-          name: 'Run Prettier'
-          when: 'always'
-          command: npm run prettier:all
-      - run: 
-          name: 'Run Eslint'
-          when: 'always'
-          command: npm run eslintx:all
   
   shared_steps:
     steps:
@@ -64,8 +56,11 @@ default_job: &default_job
     - run: bundle exec appraisal rake
 
 jobs:
-  ruby-25:
-    <<: *default_job
+  ruby-tests:
+    working_directory: ~/app
+    steps:
+      - shared_steps
+      - run: rubocop
     docker:
       - image: cimg/ruby:2.7.1-node
         environment:
@@ -82,14 +77,14 @@ jobs:
     working_directory: ~/app
     steps:
       - js_steps
-      - run:
-          name: 'Run prettier'
+      - run: 
+          name: 'Run Prettier'
           when: 'always'
-          command: npm prettier:all
-      - run:
+          command: npm run prettier:all
+      - run: 
           name: 'Run Eslint'
           when: 'always'
-          command: npm eslint:all
+          command: npm run eslintx:all
     docker:
       - image: cimg/ruby:2.7.1-node
         environment:
@@ -102,26 +97,9 @@ jobs:
           POSTGRES_DB: ruby25
           POSTGRES_PASSWORD: ""
 
-
-
-  ruby-26:
-    <<: *default_job
-    docker:
-      - image: cimg/ruby:2.7.1-node
-        environment:
-          PGHOST: localhost
-          PGUSER: administrate
-          RAILS_ENV: test
-      - image: postgres:10.1-alpine
-        environment:
-          POSTGRES_USER: administrate
-          POSTGRES_DB: ruby26
-          POSTGRES_PASSWORD: ""
-
 workflows:
   version: 2
   multiple-rubies:
     jobs:
       - js-linters
-      - ruby-26
-      - ruby-25
+      - ruby-tests
