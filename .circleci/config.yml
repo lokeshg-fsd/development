@@ -13,6 +13,14 @@ commands:
           name: Check current version of node
           command: node -v
       - run: npm install
+  
+  set_up_mysql_db:
+    steps: 
+      - checkout
+      - run:
+          name: 'Install And Setup MySQL DB'
+          command: sudo apt-get install mysql-client
+            
 
   shared_steps:
     steps:
@@ -26,6 +34,7 @@ commands:
       # Bundle install dependencies
       - run: gem install bundler
       - run: bundle install --path vendor/bundle
+      - run: sudo apt-get install default-mysql-client
 
       # Cache Dependencies
       - save_cache:
@@ -33,9 +42,11 @@ commands:
           key: administrate-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
-
+      - run:
+          name: Wait for database service on the tcp protocol
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
       # Setup the database
-      - run: bundle exec rake db:create
+      # - run: bundle exec rake db:create
       - run: bundle exec rake db:setup
 
       # Run the tests
@@ -49,6 +60,19 @@ default_job: &default_job
     - run: bundle exec appraisal install
     - run: bundle exec appraisal rake
 
+
+  others:
+      - image: circleci/php:7.1-apache-node-browsers # The primary container where steps are run
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      - image: circleci/mysql:8.0.4
+        auth:
+          username: root
+          password: root  # context / project UI env-var reference
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+          
 jobs:
   ruby-tests:
     working_directory: ~/app
@@ -61,7 +85,7 @@ jobs:
           PGHOST: localhost
           PGUSER: administrate
           RAILS_ENV: test
-      - image: mysql:5.7
+      - image: circleci/mysql:5.7
         environment:
           # MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: root
