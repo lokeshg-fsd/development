@@ -83,11 +83,12 @@ jobs:
       - shared_steps
       - run: rubocop
     docker:
-      - image: cimg/ruby:2.7.1-node
+      - image: cimg/ruby:2.7.1-mysql
         environment:
           PGHOST: localhost
           PGUSER: administrate
           RAILS_ENV: test
+          MYSQL_ROOT_PASSWORD: root
       - image: circleci/mysql
         environment:
           # MYSQL_USER: root
