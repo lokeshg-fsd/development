@@ -26,8 +26,8 @@ commands:
     steps:
       - checkout
       - run: sudo apt-get update && sudo apt-get dist-upgrade
-      - run: sudo apt install -y mysql-server
-      # Restore Cached Dependencies
+      - run: sudo apt install -f mysql-server
+      # Restore Cached Dependencies  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
       - restore_cache:
           name: Restore bundle cache
           key: administrate-{{ checksum "Gemfile.lock" }}
