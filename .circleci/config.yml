@@ -34,6 +34,7 @@ commands:
       # Bundle install dependencies
       - run: gem install bundler
       - run: bundle install --path vendor/bundle
+      - run: sudo apt-get update && sudo apt-get dist-upgrade
       - run: sudo apt-get install mysql-server
 
       # Cache Dependencies
