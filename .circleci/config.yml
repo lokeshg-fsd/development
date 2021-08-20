@@ -25,8 +25,8 @@ commands:
   shared_steps:
     steps:
       - checkout
-      - run: sudo apt-get update && sudo apt-get dist-upgrade
-      - run: sudo apt install -f mysql-server
+      #- run: sudo apt-get update && sudo apt-get dist-upgrade
+      #- run: sudo apt install -f mysql-server
       # Restore Cached Dependencies  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
       - restore_cache:
           name: Restore bundle cache
