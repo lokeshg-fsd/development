@@ -33,11 +33,11 @@ commands:
           key: administrate-{{ checksum "Gemfile.lock" }}
 
       # Bundle install dependencies
-      #- run: gem install bundler
-      #- run: bundle install --path vendor/bundle
-      - run:
-          name: 'Test MySQL DB Server'
-          command: sudo mysql -u root -proot
+      - run: gem install bundler
+      - run: bundle install --path vendor/bundle
+      #- run:
+          #name: 'Test MySQL DB Server'
+          #command: sudo mysql -u root -proot
 
       # Cache Dependencies
       - save_cache:
@@ -50,10 +50,10 @@ commands:
           command: dockerize -wait tcp://localhost:3306 -timeout 1m
       # Setup the database
       # - run: bundle exec rake db:create
-      - run: bundle exec rake db:setup
+      #- run: bundle exec rake db:setup
 
       # Run the tests
-      - run: bundle exec rake
+      #- run: bundle exec rake
 
 default_job: &default_job
   working_directory: ~/app
@@ -83,7 +83,7 @@ jobs:
       - shared_steps
       - run: rubocop
     docker:
-      - image: cimg/ruby:2.7.1-mysql
+      - image: cimg/ruby:2.7.1-node
         environment:
           PGHOST: localhost
           PGUSER: administrate
