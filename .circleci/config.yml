@@ -25,17 +25,19 @@ commands:
   shared_steps:
     steps:
       - checkout
-      # - run: sudo apt install -y mysql-client
+      - run: sudo apt-get update && sudo apt-get dist-upgrade
+      - run: sudo apt install -y mysql-server
       # Restore Cached Dependencies
       - restore_cache:
           name: Restore bundle cache
           key: administrate-{{ checksum "Gemfile.lock" }}
 
       # Bundle install dependencies
-      - run: gem install bundler
-      - run: bundle install --path vendor/bundle
-      - run: sudo apt-get update && sudo apt-get dist-upgrade
-      - run: sudo apt-get install mysql-server
+      #- run: gem install bundler
+      #- run: bundle install --path vendor/bundle
+      - run:
+          name: 'Test MySQL DB Server'
+          command: sudo mysql -u root -proot
 
       # Cache Dependencies
       - save_cache:
@@ -86,7 +88,7 @@ jobs:
           PGHOST: localhost
           PGUSER: administrate
           RAILS_ENV: test
-      - image: circleci/mysql:5.7
+      - image: circleci/mysql
         environment:
           # MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: root
@@ -115,4 +117,4 @@ workflows:
   multiple-rubies:
     jobs:
       - ruby-tests
-      - js-linters
+      # - js-linters
