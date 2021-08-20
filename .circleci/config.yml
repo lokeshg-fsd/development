@@ -13,12 +13,21 @@ commands:
           name: Check current version of node
           command: node -v
       - run: npm install
+  
+  set_up_mysql_db:
+    steps: 
+      - checkout
+      - run:
+          name: 'Install And Setup MySQL DB'
+          command: sudo apt-get install mysql-client
+            
 
   shared_steps:
     steps:
       - checkout
-      # - run: sudo apt install -y mysql-client
-      # Restore Cached Dependencies
+      #- run: sudo apt-get update && sudo apt-get dist-upgrade
+      #- run: sudo apt install -f mysql-server
+      # Restore Cached Dependencies  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
       - restore_cache:
           name: Restore bundle cache
           key: administrate-{{ checksum "Gemfile.lock" }}
@@ -26,6 +35,9 @@ commands:
       # Bundle install dependencies
       - run: gem install bundler
       - run: bundle install --path vendor/bundle
+      #- run:
+          #name: 'Test MySQL DB Server'
+          #command: sudo mysql -u root -proot
 
       # Cache Dependencies
       - save_cache:
@@ -33,13 +45,15 @@ commands:
           key: administrate-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
-
+      - run:
+          name: Wait for database service on the tcp protocol
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
       # Setup the database
-      - run: bundle exec rake db:create
+      # - run: bundle exec rake db:create
       - run: bundle exec rake db:setup
 
       # Run the tests
-      - run: bundle exec rake
+      #- run: bundle exec rake
 
 default_job: &default_job
   working_directory: ~/app
@@ -49,11 +63,25 @@ default_job: &default_job
     - run: bundle exec appraisal install
     - run: bundle exec appraisal rake
 
+
+  others:
+      - image: circleci/php:7.1-apache-node-browsers # The primary container where steps are run
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      - image: circleci/mysql:8.0.4
+        auth:
+          username: root
+          password: root  # context / project UI env-var reference
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+          
 jobs:
   ruby-tests:
     working_directory: ~/app
     steps:
       - shared_steps
+      - run: ls
       - run: rubocop
     docker:
       - image: cimg/ruby:2.7.1-node
@@ -61,7 +89,8 @@ jobs:
           PGHOST: localhost
           PGUSER: administrate
           RAILS_ENV: test
-      - image: mysql:5.7
+          MYSQL_ROOT_PASSWORD: root
+      - image: circleci/mysql
         environment:
           # MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: root
@@ -90,4 +119,4 @@ workflows:
   multiple-rubies:
     jobs:
       - ruby-tests
-      - js-linters
+      # - js-linters
