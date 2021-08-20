@@ -34,7 +34,7 @@ commands:
       # Bundle install dependencies
       - run: gem install bundler
       - run: bundle install --path vendor/bundle
-      - run: sudo apt-get install mysql-client
+      - run: sudo apt-get install mysql-server
 
       # Cache Dependencies
       - save_cache:
