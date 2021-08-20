@@ -81,6 +81,7 @@ jobs:
     working_directory: ~/app
     steps:
       - shared_steps
+      - run: ls
       - run: rubocop
     docker:
       - image: cimg/ruby:2.7.1-node
