@@ -6,7 +6,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '>=2.5.8'
 
 gem 'devise'
-gem 'mysql2', '~> 0.5'
+# Use postgresql as the database for Active Record
+gem 'pg', '~> 1.1'
 gem 'rails', '~> 6.1.1'
 gem 'rails_admin'
 gem 'rails_admin_material_theme', '~> 0.2.0'
