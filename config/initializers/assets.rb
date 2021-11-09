@@ -13,6 +13,11 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
-Rails.application.config.assets.precompile += %w[.svg]
+Rails.application.config.assets.precompile += %w[.svg .js .css]
 # Must include to get inline SVGs to work in deploy
 Rails.application.config.assets.css_compressor = :sass
+
+# Rails.application.config.assets.precompile += %w( graphiql/rails/application.js graphiql/rails/application.css ) if Rails.env.development?
+
+# //= link graphiql/rails/application.css
+# //= link graphiql/rails/application.js
