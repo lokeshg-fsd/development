@@ -5,7 +5,7 @@
 require 'rails_admin/config/actions'
 require 'rails_admin/config/actions/base'
 
-module RailsAdminOnlyAdmins
+module RailsAdmin::OnlyAdmins
 end
 
 module RailsAdmin
