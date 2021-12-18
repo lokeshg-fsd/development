@@ -125,7 +125,7 @@ export default function Sidebar(props) {
             {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
             {links}
           </div>
-          {image === undefined && (
+          {image !== undefined && (
             <div
               className={classes.background}
               style={{ backgroundImage: `url(${image})` }}
@@ -146,7 +146,7 @@ export default function Sidebar(props) {
         >
           {brand}
           <div className={classes.sidebarWrapper}>{links}</div>
-          {image === undefined && (
+          {image !== undefined && (
             <div
               className={classes.background}
               style={{ backgroundImage: `url(${image})` }}

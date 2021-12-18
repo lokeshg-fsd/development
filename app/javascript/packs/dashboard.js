@@ -1,3 +1,1 @@
-// @flow
-
-import 'DashBoard'
+import 'DashBoard/index'
