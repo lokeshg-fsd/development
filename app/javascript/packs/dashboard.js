@@ -1,3 +1,2 @@
-// @flow
-
-import 'DashBoard'
+// @noflow
+import 'DashBoard/index'
