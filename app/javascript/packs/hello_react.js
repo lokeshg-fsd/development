@@ -1,4 +1,4 @@
-// @flow
+// @noflow
 //  Run this example by adding <%= javascript_pack_tag 'hello_react' %>
 // to the head of your layout file,
 // like app/views/layouts/application.html.erb.
